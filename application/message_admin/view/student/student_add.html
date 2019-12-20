@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>CKG课管管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="__STATIC__/admin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__STATIC__/admin/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <form class="layui-form" action="" id="form_submit_add">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">学号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="student_id" value="{$student_id}"
+                                   readonly="readonly" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">姓名<i style="color: red">*</i></label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" required lay-verify="required" value=""
+                                   placeholder="请输入姓名" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">学业状态</label>
+                        <div class="layui-input-block">
+                            <select name="status"  class="layui-input">
+                                <option value="1">未开始</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">英文名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="english" value=""
+                                   placeholder="请输入英文名" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">联系电话<i style="color: red">*</i></label>
+                        <div class="layui-input-block">
+                            <input type="text" name="phone" required lay-verify="required" value=""
+                                   placeholder="请输入联系电话" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">性别</label>
+                        <div class="layui-input-block">
+                            <select name="sex" id="sex" class="layui-input">
+                                <option value="1" selected>男</option>
+                                <option value="2">女</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">年龄</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="age" value=""
+                                   placeholder="请输入年龄" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">国籍</label>
+                        <div class="layui-input-block">
+                            <select name="nationality"  class="layui-input">
+                                <option value="china" selected>china</option>
+                                <option value="taiwan">taiwan</option>
+                                <option value="korean">korean</option>
+                                <option value="japan">japan</option>
+                                <option value="vietnam">vietnam</option>
+                                <option value="russia">russia</option>
+                                <option value="arab">arab</option>
+                                <option value="mongolia">mongolia</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">护照号码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="passport" value=""
+                                   placeholder="请输入护照号码" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">家庭住址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="address" value=""
+                                   placeholder="请输入家庭住址" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">到达航班</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="flight" value=""
+                                   placeholder="请输入到达航班" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">学科<i style="color: red">*</i></label>
+                        <div class="layui-input-block">
+                            <select name="curriculum_id"  class="layui-input">
+                                {foreach $curriculum_info as $k=>$v}
+                                    <option value="{$v.id}">{$v.username}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">学业周数</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="days" value=""
+                                   placeholder="请输入学业周数" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">班级模式</label>
+                        <div class="layui-input-block">
+                            <select name="school"  class="layui-input">
+                                <option value="1">一对一</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">到达日期</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" name="arrival"
+                                   id="test-laydate-start" placeholder="到达日期">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">离校日期</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" name="leave"
+                                   id="test-laydate-end" placeholder="离校日期">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">房间床位</label>
+                        <div class="layui-input-block">
+                            <input type="hidden" id="dorm_id" name="dorm_id" value="">
+                            <input type="text" id="dorm_name" value=""
+                                   placeholder="请选择到达和离校日期" readonly="readonly" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">房间类型</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="dorm_type" value=""
+                                   placeholder="请选择到达和离校日期" readonly="readonly" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">中介机构</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="mechanism_id" value="{$Think.session.username}"
+                                   readonly="readonly" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="remarks" value=""
+                                   placeholder="请输入备注" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    {if $Think.session.type == 2}
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">缴费状态</label>
+                        <div class="layui-input-block">
+                            <select name="pay"  class="layui-input">
+                                <option value="1">未缴费</option>
+                                <option value="2">已缴费</option>
+                            </select>
+                        </div>
+                    </div>
+                    {/if}
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input type="button" value="取消" class="layui-btn layui-btn-primary" onclick="qx();">
+                            <input type="button" lay-submit lay-filter="submit" value="确认" class="layui-btn layui-btn-normal">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__STATIC__/admin/layui/layui.js"></script>
+<script src="__STATIC__/jquery-3.2.1.min.js"></script>
+<script>
+    layui.config({
+        base: '__STATIC__/admin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    })
+    layui.use(['form','laydate'], function () {
+        var form = layui.form;
+        var laydate = layui.laydate;
+
+        form.on('submit(submit)', function (data) {
+            var gets = data.field;
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            $.post("{:url('student_add')}", gets, function (ret) {
+                if (ret.code == 1) {
+                    layer.alert(ret.msg, function () {
+                        parent.layui.table.reload('student_lists'); //重载表格
+                        parent.layer.close(index); //再执行关闭
+                    })
+                } else {
+                    //提示
+                    layer.alert(ret.msg)
+                }
+            })
+        })
+
+        //开始日期
+        var insStart = laydate.render({
+            elem: '#test-laydate-start'
+            , btns: ['confirm']
+            , done: function (value, date) {
+                //更新结束日期的最小日期
+                insEnd.config.min = lay.extend({}, date, {
+                    month: date.month - 1
+                });
+
+                //自动弹出结束日期的选择器
+                insEnd.config.elem[0].focus();
+            }
+        });
+
+        //结束日期
+        var insEnd = laydate.render({
+            elem: '#test-laydate-end'
+            , btns: ['confirm']
+            , min: 0
+            , done: function (value, date) {
+                //更新开始日期的最大日期
+                insStart.config.max = lay.extend({}, date, {
+                    month: date.month - 1
+                });
+                var start = $("#test-laydate-start").val();
+                var end = $("#test-laydate-end").val();
+                var sex = $("#sex option:selected").val();
+                if(start != '' && end != '' && sex != ''){
+                    $.ajax({
+                        url: "{:url('student_dorm')}",
+                        async: false,//这一步是非常重要的，作用是设置为同步执行
+                        type: "POST",
+                        data: {"start":start,"end":end,"sex":sex},
+                        dataType: "json",
+                        success: function (data) {
+                            if(data.code == 1){
+                                $("#dorm_id").val(data.data.id);
+                                $("#dorm_name").val(data.data.username);
+                                $("#dorm_type").val(data.data.type);
+                            }else{
+                                $("#dorm_id").val('');
+                                $("#dorm_name").val('');
+                                $("#dorm_type").val('');
+                                layer.alert(data.msg);
+                            }
+                        }
+                    });
+                }else{
+                    layer.alert("请完整时间,性别！");
+                }
+            }
+        });
+    })
+    function qx() {
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index); //再执行关闭
+    }
+</script>
+</body>
+</html>

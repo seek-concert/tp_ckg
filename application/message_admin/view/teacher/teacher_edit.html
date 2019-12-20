@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>CKG课管管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="__STATIC__/admin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__STATIC__/admin/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <form class="layui-form" action="" id="form_submit_add">
+                    <input type="hidden" name="id" value="{$teacher_info['id']}">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">编号<i style="color: red">*</i></label>
+                        <div class="layui-input-block">
+                            <input type="text" name="identifier" required lay-verify="required" value="{$teacher_info['identifier']}"
+                                   placeholder="请输入编号" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">老师<i style="color: red">*</i></label>
+                        <div class="layui-input-block">
+                            <input type="text" name="username" required lay-verify="required" value="{$teacher_info['username']}"
+                                   placeholder="请输入老师" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">教室<i style="color: red">*</i></label>
+                        <div class="layui-input-block">
+                            <select name="classroom_id" class="layui-input">
+                                <option value="{$teacher_classroom['id']}" >{$teacher_classroom['username']}</option>
+                                {foreach $classroom_info as $k=>$v}
+                                <option value="{$v.id}" >{$v.username}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">学科<i style="color: red">*</i></label>
+                        <div class="layui-input-block">
+                            {foreach $curriculum_info as $k=>$v}
+                            <input type="checkbox" name="curriculum[]" {if in_array($v['id'],$teacher_info['curriculum']) }checked{/if} lay-skin="primary" title="{$v.username}" value="{$v.id}">
+                            {/foreach}
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">团体课<i style="color: red">*</i></label>
+                        <div class="layui-input-block">
+                            <select name="team" class="layui-input">
+                                <option value="1" {if $teacher_info['team'] == '无'}selected{/if}>无</option>
+                                <option value="2" {if $teacher_info['team'] == '有'}selected{/if}>有</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态<i style="color: red">*</i></label>
+                        <div class="layui-input-block">
+                            <select name="status" class="layui-input">
+                                <option value="1" {if $teacher_info['status']== '启用'}selected{/if}>启用</option>
+                                <option value="2" {if $teacher_info['status']== '停用'}selected{/if}>停用</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <input type="button" value="取消" class="layui-btn layui-btn-primary" onclick="qx();">
+                            <input type="button" lay-submit lay-filter="submit" value="确认" class="layui-btn layui-btn-normal">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__STATIC__/admin/layui/layui.js"></script>
+<script src="__STATIC__/jquery-3.2.1.min.js"></script>
+<script>
+    layui.config({
+        base: '__STATIC__/admin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    })
+    layui.use('form', function () {
+        var form = layui.form;
+
+        form.on('submit(submit)', function (data) {
+            var gets = data.field;
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            $.post("{:url('teacher_edit')}", gets, function (ret) {
+                if (ret.code == 1) {
+                    layer.alert(ret.msg, function () {
+                        parent.layui.table.reload('teacher_lists'); //重载表格
+                        parent.layer.close(index); //再执行关闭
+                    })
+                } else {
+                    //提示
+                    layer.alert(ret.msg)
+                }
+            })
+        })
+    })
+    function qx() {
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index); //再执行关闭
+    }
+</script>
+</body>
+</html>
