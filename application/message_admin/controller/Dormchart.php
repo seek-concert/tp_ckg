@@ -26,7 +26,14 @@ class Dormchart extends Base
      * @return \think\response\View
      */
     public function lists(){
+        $param = input('');
+        $page = isset($param['page'])?(int)$param['page']:1;
+        $limit = isset($param['limit'])?(int)$param['limit']:10;
+        
+        //获取所有床位
+        $dorm_lists = $this->dorm_model->get_all_data_page(['status'=>1],$page,$limit,'','id,username');
         $data = [];
+        //拿到数据库已存在相关的年份
         $year =  Db::query("select distinct date_format(arrival ,'%Y') as 'years' from pq_student");
          $new_year_arr =[];
          if($year){
@@ -34,13 +41,16 @@ class Dormchart extends Base
                  $new_year_arr[] = $v['years'];
              }
          }
-
         $data['years_arr'] = $new_year_arr;
+        //初始化为当前年份
         $y=date('Y');
+        //初始化为当前月份
         $m=date('m');
+        
         $data['years'] = $y;
         $data['months'] = $m;
         $data['days'] =  date("t",strtotime("$y-$m"));
+        $data['dorm_lists'] =  $dorm_lists;
         return view('',$data);
     }
 

@@ -24,14 +24,14 @@
                     <div class="layui-input-inline">
                             <select name="years">
                                 {foreach $years_arr as $v}
-                                <option value="{$v}年" {if $years==$v}selected{/if}>{$v}年</option>
+                                <option value="{$v}" {if $years==$v}selected{/if}>{$v}年</option>
                                 {/foreach}
                             </select>
                     </div>
                     <div class="layui-input-inline">
                         <select name="months" id="months">
                             {for start='1' end='13'}
-                            <option value="{$i}月" {if $months==$i}selected{/if}>{$i}月</option>
+                            <option value="{$i}" {if $months==$i}selected{/if}>{$i}月</option>
                             {/for}
                         </select>
                     </div>
@@ -44,12 +44,37 @@
             </div>
         </div>
         <div class="layui-card-body">
-            <div style="padding-bottom: 10px;display: none" id="dorm_all">
-                <button class="layui-btn layui-btn-sm" onclick="dorm_add()" data-type="add">
-                    <i class="layui-icon layui-icon-add-1"></i>添加家长住宿
-                </button>
-            </div>
-            <table id="dorm_lists" lay-filter="dorm"></table>
+           
+            <table class="layui-table">
+
+                    <thead>
+                        <tr>
+                            <th colspan="{$days +1}" style="text-align: center;">
+                                    {$months}月
+                            </th>
+                        </tr>
+                      <tr>
+                        <th>床位</th>
+                        {for start='1' end = "$days" comparison="elt"}
+                            <th>{$i}</th>
+                        {/for}
+                       
+
+                      </tr> 
+                    </thead>
+                    <tbody>
+                        {foreach $dorm_lists as $key => $vo}
+                            <tr>
+                                <td>{$vo['username']}</td>
+                                {for start='1' end = "$days" comparison="elt"}
+                                    <th bad-id="{$vo['id']}" day-id="{$i}"></th>
+                                {/for}
+                            </tr>
+                        {/foreach}
+                     
+                     
+                    </tbody>
+                  </table>
         </div>
     </div>
 </div>
@@ -63,84 +88,7 @@
         index: 'lib/index' //主入口模块
     });
 
-    layui.use(['table'], function () {
-        var table = layui.table;
-        var form = layui.form;
-        //第一个实例
-        table.render({
-            elem: '#dorm_lists',
-            height: 550,
-            url: '{:url("get_dorm_chart")}', //数据接口
-            where: {},
-            page: true, //开启分页
-            toolbar: '#dorm_all',
-            defaultToolbar: ['filter'],
-            skin: 'nob',
-            size: 'sm',
-            cellMinWidth: '60',
 
-            response: {
-                statusCode: 1,//规定成功的状态码，默认：0
-            },
-            cols: [
-                [
-                    {
-                        field: '',
-                        title: {$months}+'月',
-                        align: 'center',
-                        colspan:{$days}+1
-                    },
-                ],
-               [
-                    {
-                        field: 'username',
-                        title: '床位',
-                        minWidth:80,
-                        align: 'center',
-                        sort: true,
-                    },
-                   {php}
-                        for($i=1;$i<=$days;$i++){
-                           echo ' {field: '.$i.',title: '.$i.',align: \'center\' },';
-                        }
-                   {/php}
-                ]
-            ],
-
-        });
-
-        //监听搜索
-        form.on('submit(LAY-user-back-search)', function (data) {
-            var field = data.field;
-            //执行重载
-            table.reload('student_lists', {
-                where: field
-                , page: {
-                    curr: 1 //重新从第 1 页开始 避免数据只有一页数据报错
-                }
-            });
-        });
-        //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-        // table.on('tool(dorm)', function (obj) {
-        //     //获得当前行数据
-        //     var data = obj.data;
-        //     //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-        //     var layEvent = obj.event;
-        //     //获得当前行 tr 的DOM对象
-        //     var tr = obj.tr;
-        //     var id = data.id;
-        //     if (layEvent === 'edit') {
-        //         //编辑
-        //         var url = "{:url('dorm_edit','','',true)}/id/" + id;
-        //         edit_index = layer.open({
-        //             type: 2,
-        //             title: '编辑信息',
-        //             area: ['90%', '90%'],
-        //             content: url
-        //         });
-        //     }
-        // });
-    });
 
     //添加
     function dorm_add() {
