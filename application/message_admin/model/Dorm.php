@@ -36,4 +36,11 @@ class Dorm extends Base
         $status = ['' => '', 1 => 'Male', 2 => 'Female'];
         return $status[$value];
     }
+
+    //关联学生信息
+    public function student()
+    {
+        return $this->hasOne('Student', 'id', 'dorm_id')->bind(
+            ['student_id'=>'student_id','username'=>'name','s_arrival' => 'arrival' , 'd_leave' => 'leave']);
+    }
 }

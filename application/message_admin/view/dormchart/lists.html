@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>CKG课管管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="__STATIC__/admin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__STATIC__/admin/style/admin.css" media="all">
+</head>
+
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">日期</label>
+                    <div class="layui-input-inline">
+                            <select name="years">
+                                {foreach $years_arr as $v}
+                                <option value="{$v}年" {if $years==$v}selected{/if}>{$v}年</option>
+                                {/foreach}
+                            </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="months" id="months">
+                            {for start='1' end='13'}
+                            <option value="{$i}月" {if $months==$i}selected{/if}>{$i}月</option>
+                            {/for}
+                        </select>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-user-back-search">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>查询
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;display: none" id="dorm_all">
+                <button class="layui-btn layui-btn-sm" onclick="dorm_add()" data-type="add">
+                    <i class="layui-icon layui-icon-add-1"></i>添加家长住宿
+                </button>
+            </div>
+            <table id="dorm_lists" lay-filter="dorm"></table>
+        </div>
+    </div>
+</div>
+
+<script src="__STATIC__/admin/layui/layui.js"></script>
+<script src="__STATIC__/jquery-3.2.1.min.js"></script>
+<script>
+    layui.config({
+        base: '__STATIC__/admin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    });
+
+    layui.use(['table'], function () {
+        var table = layui.table;
+        var form = layui.form;
+        //第一个实例
+        table.render({
+            elem: '#dorm_lists',
+            height: 550,
+            url: '{:url("get_dorm_chart")}', //数据接口
+            where: {},
+            page: true, //开启分页
+            toolbar: '#dorm_all',
+            defaultToolbar: ['filter'],
+            skin: 'nob',
+            size: 'sm',
+            cellMinWidth: '60',
+
+            response: {
+                statusCode: 1,//规定成功的状态码，默认：0
+            },
+            cols: [
+                [
+                    {
+                        field: '',
+                        title: {$months}+'月',
+                        align: 'center',
+                        colspan:{$days}+1
+                    },
+                ],
+               [
+                    {
+                        field: 'username',
+                        title: '床位',
+                        minWidth:80,
+                        align: 'center',
+                        sort: true,
+                    },
+                   {php}
+                        for($i=1;$i<=$days;$i++){
+                           echo ' {field: '.$i.',title: '.$i.',align: \'center\' },';
+                        }
+                   {/php}
+                ]
+            ],
+
+        });
+
+        //监听搜索
+        form.on('submit(LAY-user-back-search)', function (data) {
+            var field = data.field;
+            //执行重载
+            table.reload('student_lists', {
+                where: field
+                , page: {
+                    curr: 1 //重新从第 1 页开始 避免数据只有一页数据报错
+                }
+            });
+        });
+        //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+        // table.on('tool(dorm)', function (obj) {
+        //     //获得当前行数据
+        //     var data = obj.data;
+        //     //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+        //     var layEvent = obj.event;
+        //     //获得当前行 tr 的DOM对象
+        //     var tr = obj.tr;
+        //     var id = data.id;
+        //     if (layEvent === 'edit') {
+        //         //编辑
+        //         var url = "{:url('dorm_edit','','',true)}/id/" + id;
+        //         edit_index = layer.open({
+        //             type: 2,
+        //             title: '编辑信息',
+        //             area: ['90%', '90%'],
+        //             content: url
+        //         });
+        //     }
+        // });
+    });
+
+    //添加
+    function dorm_add() {
+        var url = "{:url('dorm_add','','',true)}";
+        add_index = layer.open({
+            type: 2,
+            title: '添加信息',
+            area: ['90%', '90%'],
+            content: url
+        });
+    }
+</script>
+</body>
+
+</html>
