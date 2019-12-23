@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>CKG课管管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="__STATIC__/admin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__STATIC__/admin/style/admin.css" media="all">
+</head>
+
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">日期</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="arrival" id="arrival" placeholder="请输入" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-user-back-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>查询
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="layui-card-body">
+            <table id="lists" lay-filter="lists"></table>
+            <script type="text/html" id="bards">
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑信息</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script src="__STATIC__/admin/layui/layui.js"></script>
+<script src="__STATIC__/jquery-3.2.1.min.js"></script>
+<script>
+    layui.config({
+        base: '__STATIC__/admin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    });
+
+    layui.use(['table', 'laydate'], function () {
+        var table = layui.table;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        //第一个实例
+        table.render({
+            elem: '#lists',
+            height: 550,
+            url: '{:url("get_lists")}', //数据接口
+            where: {},
+            page: true, //开启分页
+            toolbar: '#lists_all',
+            defaultToolbar: ['filter'],
+            skin: 'nob',
+            size: 'sm',
+            cellMinWidth: 60,
+            response: {
+                statusCode: 1,//规定成功的状态码，默认：0
+            },
+            cols: [
+                [ //表头
+                    {
+                        field: 'c_name',
+                        title: '房间',
+                        minWidth: 30,
+                        align: 'center',
+                    },
+                    {
+                        field: 'username',
+                        title: '老师',
+                        minWidth: 30,
+                        align: 'center',
+                    },
+                    {
+                        field: 's1',
+                        title: 'S1(8:35-9:20)',
+                        minWidth: 150,
+                        align: 'center',
+                    },
+                    {
+                        field: 's2',
+                        title: 'S2(9:25-10:10)',
+                        minWidth: 150,
+                        align: 'center',
+                    },
+                    {
+                        field: 's3',
+                        title: 'S3(10:15-11:00)',
+                        minWidth: 150,
+                        align: 'center',
+                    },
+                    {
+                        field: 's4',
+                        title: 'S4(11:05-11:50)',
+                        minWidth: 150,
+                        align: 'center',
+                    },
+                    {
+                        field: 's5',
+                        title: 'S5(12:50-1:35)',
+                        minWidth: 150,
+                        align: 'center',
+                    },
+                    {
+                        field: 's6',
+                        title: 'S6(1:40-2:25)',
+                        minWidth: 150,
+                        align: 'center',
+                    },
+                    {
+                        field: 's7',
+                        title: 'S7(2:30-3:15)',
+                        minWidth: 150,
+                        align: 'center',
+                    },
+                    {
+                        field: 's8',
+                        title: 'S8(3:20-4:05)',
+                        minWidth: 150,
+                        align: 'center',
+                    },
+                    {
+                        field: 's9',
+                        title: 'S9(4:10-4:55)',
+                        minWidth: 150,
+                        align: 'center',
+                    },
+                ]
+            ],
+        });
+
+        //监听搜索
+        form.on('submit(LAY-user-back-search)', function (data) {
+            var field = data.field;
+            //执行重载
+            table.reload('lists', {
+                where: field
+                , page: {
+                    curr: 1 //重新从第 1 页开始 避免数据只有一页数据报错
+                }
+            });
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#arrival' //指定元素
+        });
+    });
+
+</script>
+</body>
+
+</html>

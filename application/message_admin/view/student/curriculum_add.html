@@ -60,7 +60,7 @@
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                         <div class="layui-input-inline">
-                            <input type="button" value="自动" class="layui-btn layui-btn-normal">
+                            <input type="button" value="自动" class="layui-btn layui-btn-normal" onclick="zd();">
                             <input type="button" value="上次保存" class="layui-btn layui-btn-primary" onclick="sc();">
                         </div>
                         <div class="layui-input-inline">
@@ -172,6 +172,13 @@
     }
     function sc() {
         window.location.reload();
+    }
+
+    function zd() {
+        var student_id = "{$student_id}";
+        $.post("{:url('curriculum_automatic')}", {student_id:student_id}, function (ret) {
+
+        })
     }
 </script>
 </body>
