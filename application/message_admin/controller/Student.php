@@ -556,4 +556,57 @@ class Student extends Base
         }
     }
 
+    /**
+     * 自动排课
+     */
+    public function curriculum_automatic()
+    {
+        $param = input('');
+        //获取学生信息
+        $student_info = $this->student_model->get_one_data(['id' => $param['student_id']],'','id,curriculum_id,arrival,leave');
+        //获取学科对应课程节数
+        $xk_info = $this->curriculum_model->get_one_data(['id' => $student_info['curriculum_id']],'','id,username,one,team');
+        //获取一对一课程
+        $kc_one =  $this->curriculum_model->get_all_data(['pid' => $student_info['curriculum_id'],'type' => 1],'','id,username');
+        //获取团体课程
+        $kc_team =  $this->curriculum_model->get_all_data(['pid' => $student_info['curriculum_id'],'type' => 2],'','id,username');
+        //组合数据
+        $data = [];
+        $one = 1;
+        $team = 1;
+        for ($i=1;$i<10;$i++){
+            $data[$i]['student_id'] = $student_info['id'];
+            $data[$i]['num'] = $i;
+            $data[$i]['arrival'] = $student_info['arrival'];
+            $data[$i]['leave'] = $student_info['leave'];
+            if($one <= $xk_info['one']){
+                //课程
+                $data[$i]['curriculum_id'] = $kc_one[$i];
+                //老师
+                $data[$i]['teacher_id'] = 'one'.$i;
+                //课本
+                $data[$i]['teacher'] = 'one'.$i;
+                $one++;
+                continue;
+            }
+            if($team <= $xk_info['team']){
+                //课程
+                $data[$i]['curriculum_id'] = 'team'.$i;
+                //老师
+                $data[$i]['teacher_id'] = 'team'.$i;
+                //课本
+                $data[$i]['teacher'] = 'team'.$i;
+                $team++;
+                continue;
+            }
+            //课程
+            $data[$i]['curriculum_id'] = 0;
+            //老师
+            $data[$i]['teacher_id'] = 0;
+            //课本
+            $data[$i]['teacher'] = [];
+        }
+        dump($data);exit;
+    }
+
 }
