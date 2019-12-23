@@ -23,6 +23,8 @@ class Student extends Base
     protected $course_model;
     //老师模型
     protected $teacher_model;
+    //住宿记录
+    protected $dorm_log_model;
 
     public function __construct()
     {
@@ -32,6 +34,7 @@ class Student extends Base
         $this->dorm_model = model('Dorm');
         $this->course_model = model('Course');
         $this->teacher_model = model('Teacher');
+        $this->dorm_log_model = model('DormLog');
     }
 
     /**
@@ -127,11 +130,24 @@ class Student extends Base
             $sqlmap['pay']  = isset($param['pay'])?$param['pay']:1;
             $sqlmap['mechanism_id']  = session('id');
             $sqlmap['admin_id']  = session('id');
+            //启动事务
+            $this->student_model->startTrans();
             //新增数据
-            $ret = $this->student_model->add_data($sqlmap);
-            if ($ret) {
+            $student_add = $this->student_model->add_data($sqlmap);
+            $log = [];
+            $log['student_id'] = $this->student_model->id;
+            $log['type'] = 1;
+            $log['dorm_id'] = $sqlmap['dorm_id'];
+            $log['inputtime'] = strtotime($sqlmap['arrival']);
+            $log['leavetime'] = strtotime($sqlmap['leave']);
+            $dorm_log_add = $this->dorm_log_model->add_data($log);
+            if ($student_add && $dorm_log_add) {
+                //提交
+                $this->teacher_model->commit();
                 $this->success('添加成功');
             } else {
+                //回滚
+                $this->teacher_model->rollback();
                 $this->error('添加出错，请重试');
             }
         }
@@ -186,11 +202,22 @@ class Student extends Base
             $sqlmap['remarks']  = isset($param['remarks'])?$param['remarks']:'';
             $sqlmap['pay']  = isset($param['pay'])?$param['pay']:1;
             $sqlmap['admin_id']  = session('id');
+            //启动事务
+            $this->student_model->startTrans();
             //修改数据
-            $ret = $this->student_model->update_data($sqlmap,['id' => $id]);
-            if ($ret) {
+            $student_edit = $this->student_model->update_data($sqlmap,['id' => $id]);
+            $log = [];
+            $log['dorm_id'] = $sqlmap['dorm_id'];
+            $log['inputtime'] = strtotime($sqlmap['arrival']);
+            $log['leavetime'] = strtotime($sqlmap['leave']);
+            $dorm_log_edit = $this->dorm_log_model->update_data($log,['student_id' => $id]);
+            if ($student_edit && $dorm_log_edit) {
+                //提交
+                $this->teacher_model->commit();
                 $this->success('修改成功');
             } else {
+                //回滚
+                $this->teacher_model->rollback();
                 $this->error('修改出错，请重试');
             }
         }
