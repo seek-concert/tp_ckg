@@ -61,11 +61,14 @@
                 <button class="layui-btn layui-btn-sm" onclick="student_add()" data-type="add">
                     <i class="layui-icon layui-icon-add-1"></i>添加
                 </button>
+                <button class="layui-btn layui-btn-sm" onclick="dorm()" data-type="add">
+                    床位查询
+                </button>
             </div>
             <table id="student_lists" lay-filter="test"></table>
             <script type="text/html" id="barstudent">
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑信息</a>
-                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">查看课程</a>
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">编辑课程</a>
             </script>
         </div>
     </div>
@@ -257,7 +260,14 @@
             var tr = obj.tr;
             var id = data.id;
             if (layEvent === 'detail') {
-
+                //编辑课程
+                var url = "{:url('student_curriculum','','',true)}/id/" + id;
+                edit_index = layer.open({
+                    type: 2,
+                    title: '编辑课程',
+                    area: ['90%', '90%'],
+                    content: url
+                });
             } else if (layEvent === 'edit') {
                 //编辑
                 var url = "{:url('student_edit','','',true)}/id/" + id;
@@ -283,6 +293,16 @@
         add_index = layer.open({
             type: 2,
             title: '添加学生',
+            area: ['90%', '90%'],
+            content: url
+        });
+    }
+    //床位查询
+    function dorm() {
+        var url = "{:url('dorm','','',true)}";
+        add_index = layer.open({
+            type: 2,
+            title: '床位查询',
             area: ['90%', '90%'],
             content: url
         });

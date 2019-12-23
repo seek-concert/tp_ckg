@@ -28,6 +28,16 @@
                                    placeholder="请输入课程" autocomplete="off" class="layui-input">
                         </div>
                     </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">类型<i style="color: red">*</i></label>
+                        <div class="layui-input-block">
+                            <select name="type" class="layui-input">
+                                <option value="">请选择</option>
+                                <option value="1">1V1课</option>
+                                <option value="2">团体课</option>
+                            </select>
+                        </div>
+                    </div>
                     {/if}
                     {if $level == 1 && $id > 0}
                     <div class="layui-form-item">

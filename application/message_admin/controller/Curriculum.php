@@ -118,6 +118,22 @@ class Curriculum extends Base
                 }
             }else{
                 $sqlmap['level'] = $level+1;
+                if($level == 0){
+                    $type = $param['type'];
+                    $curriculum_info = $this->curriculum_model->get_one_data(['id'=>$id],'','one,team');
+                    if($type == 1){
+                        $nums = $this->curriculum_model->get_all_count(['pid' => $id,'type' => $type]);
+                        if($nums >= $curriculum_info['one']){
+                            $this->error('课程已满！');
+                        }
+                    }else if($type == 2){
+                        $nums = $this->curriculum_model->get_all_count(['pid' => $id,'type' => $type]);
+                        if($nums >= $curriculum_info['team']){
+                            $this->error('课程已满！');
+                        }
+                    }
+                    $sqlmap['type'] = $type;
+                }
             }
             //新增数据
             $ret = $this->curriculum_model->add_data($sqlmap);

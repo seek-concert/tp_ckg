@@ -18,11 +18,11 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <form class="layui-form" action="" id="form_submit_add">
-
+                    <input type="hidden" name="id" value="{$student_info['id']}">
                     <div class="layui-form-item">
                         <label class="layui-form-label">学号</label>
                         <div class="layui-input-block">
-                            <input type="text" name="student_id" value="{$student_id}"
+                            <input type="text" name="student_id" value="{$student_info['student_id']}"
                                    readonly="readonly" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -30,7 +30,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">姓名<i style="color: red">*</i></label>
                         <div class="layui-input-block">
-                            <input type="text" name="name" required lay-verify="required" value=""
+                            <input type="text" name="name" required lay-verify="required" value="{$student_info['name']}"
                                    placeholder="请输入姓名" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -39,8 +39,8 @@
                         <label class="layui-form-label">学业状态</label>
                         <div class="layui-input-block">
                             <select name="status"  class="layui-input">
-                                <option value="1">未开始</option>
-                                <option value="2">学习中</option>
+                                <option value="1" {if $student_info['status'] == '未开始'}selected{/if}>未开始</option>
+                                <option value="1" {if $student_info['status'] == '学习中'}selected{/if}>学习中</option>
                             </select>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">英文名</label>
                         <div class="layui-input-block">
-                            <input type="text" name="english" value=""
+                            <input type="text" name="english" value="{$student_info['english']}"
                                    placeholder="请输入英文名" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">联系电话<i style="color: red">*</i></label>
                         <div class="layui-input-block">
-                            <input type="text" name="phone" required lay-verify="required" value=""
+                            <input type="text" name="phone" required lay-verify="required" value="{$student_info['phone']}"
                                    placeholder="请输入联系电话" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -65,8 +65,8 @@
                         <label class="layui-form-label">性别</label>
                         <div class="layui-input-block">
                             <select name="sex" id="sex" class="layui-input">
-                                <option value="1" selected>男</option>
-                                <option value="2">女</option>
+                                <option value="1" {if $student_info['sex'] == '男'}selected{/if}>男</option>
+                                <option value="2" {if $student_info['sex'] == '女'}selected{/if}>女</option>
                             </select>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">年龄</label>
                         <div class="layui-input-block">
-                            <input type="text" name="age" value=""
+                            <input type="text" name="age" value="{$student_info['age']}"
                                    placeholder="请输入年龄" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -83,14 +83,14 @@
                         <label class="layui-form-label">国籍</label>
                         <div class="layui-input-block">
                             <select name="nationality"  class="layui-input">
-                                <option value="china" selected>china</option>
-                                <option value="taiwan">taiwan</option>
-                                <option value="korean">korean</option>
-                                <option value="japan">japan</option>
-                                <option value="vietnam">vietnam</option>
-                                <option value="russia">russia</option>
-                                <option value="arab">arab</option>
-                                <option value="mongolia">mongolia</option>
+                                <option value="china" {if $student_info['nationality'] == 'china'}selected{/if}>china</option>
+                                <option value="taiwan" {if $student_info['nationality'] == 'taiwan'}selected{/if}>taiwan</option>
+                                <option value="korean" {if $student_info['nationality'] == 'korean'}selected{/if}>korean</option>
+                                <option value="japan" {if $student_info['nationality'] == 'japan'}selected{/if}>japan</option>
+                                <option value="vietnam" {if $student_info['nationality'] == 'vietnam'}selected{/if}>vietnam</option>
+                                <option value="russia" {if $student_info['nationality'] == 'russia'}selected{/if}>russia</option>
+                                <option value="arab" {if $student_info['nationality'] == 'arab'}selected{/if}>arab</option>
+                                <option value="mongolia" {if $student_info['nationality'] == 'arab'}selected{/if}>arab</option>
                             </select>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">护照号码</label>
                         <div class="layui-input-block">
-                            <input type="text" name="passport" value=""
+                            <input type="text" name="passport" value="{$student_info['passport']}"
                                    placeholder="请输入护照号码" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">家庭住址</label>
                         <div class="layui-input-block">
-                            <input type="text" name="address" value=""
+                            <input type="text" name="address" value="{$student_info['address']}"
                                    placeholder="请输入家庭住址" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">到达航班</label>
                         <div class="layui-input-block">
-                            <input type="text" name="flight" value=""
+                            <input type="text" name="flight" value="{$student_info['flight']}"
                                    placeholder="请输入到达航班" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -124,7 +124,7 @@
                         <div class="layui-input-block">
                             <select name="curriculum_id"  class="layui-input">
                                 {foreach $curriculum_info as $k=>$v}
-                                    <option value="{$v.id}">{$v.username}</option>
+                                    <option value="{$v.id}" {if $student_info['curriculum_id'] == $v['id']}selected{/if}>{$v.username}</option>
                                 {/foreach}
                             </select>
                         </div>
@@ -133,7 +133,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">学业周数</label>
                         <div class="layui-input-block">
-                            <input type="text" name="days" value=""
+                            <input type="text" name="days" value="{$student_info['days']}"
                                    placeholder="请输入学业周数" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -142,8 +142,8 @@
                         <label class="layui-form-label">班级模式</label>
                         <div class="layui-input-block">
                             <select name="school"  class="layui-input">
-                                <option value="1">一对一</option>
-                                <option value="2">团体课</option>
+                                <option value="1" {if $student_info['school'] == 1}selected{/if}>一对一</option>
+                                <option value="2" {if $student_info['school'] == 2}selected{/if}>团体课</option>
                             </select>
                         </div>
                     </div>
@@ -151,7 +151,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">到达日期</label>
                         <div class="layui-input-block">
-                            <input type="text" class="layui-input" name="arrival"
+                            <input type="text" class="layui-input" name="arrival" value="{$student_info['arrival']}"
                                    id="test-laydate-start" placeholder="到达日期">
                         </div>
                     </div>
@@ -159,7 +159,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">离校日期</label>
                         <div class="layui-input-block">
-                            <input type="text" class="layui-input" name="leave"
+                            <input type="text" class="layui-input" name="leave" value="{$student_info['leave']}"
                                    id="test-laydate-end" placeholder="离校日期">
                         </div>
                     </div>
@@ -167,8 +167,8 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">房间床位</label>
                         <div class="layui-input-block">
-                            <input type="hidden" id="dorm_id" name="dorm_id" value="">
-                            <input type="text" id="dorm_name" value=""
+                            <input type="hidden" id="dorm_id" name="dorm_id" value="{$student_info['dorm_id']}">
+                            <input type="text" id="dorm_name" value="{$student_info['d_name']}"
                                    placeholder="请选择到达和离校日期" readonly="readonly" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -176,7 +176,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">房间类型</label>
                         <div class="layui-input-block">
-                            <input type="text" id="dorm_type" value=""
+                            <input type="text" id="dorm_type" value="{$student_info['d_type']}"
                                    placeholder="请选择到达和离校日期" readonly="readonly" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -184,7 +184,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">中介机构</label>
                         <div class="layui-input-block">
-                            <input type="text" name="mechanism_id" value="{$Think.session.username}"
+                            <input type="text" name="mechanism_id" value="{$student_info['m_name']}"
                                    readonly="readonly" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -192,7 +192,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">备注</label>
                         <div class="layui-input-block">
-                            <input type="text" name="remarks" value=""
+                            <input type="text" name="remarks" value="{$student_info['remarks']}"
                                    placeholder="请输入备注" autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -201,8 +201,8 @@
                         <label class="layui-form-label">缴费状态</label>
                         <div class="layui-input-block">
                             <select name="pay"  class="layui-input">
-                                <option value="1">未缴费</option>
-                                <option value="2">已缴费</option>
+                                <option value="1" {if $student_info['pay'] == 1}selected{/if}>未缴费</option>
+                                <option value="2" {if $student_info['pay'] == 2}selected{/if}>已缴费</option>
                             </select>
                         </div>
                     </div>
@@ -234,7 +234,7 @@
         form.on('submit(submit)', function (data) {
             var gets = data.field;
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-            $.post("{:url('student_add')}", gets, function (ret) {
+            $.post("{:url('student_edit')}", gets, function (ret) {
                 if (ret.code == 1) {
                     layer.alert(ret.msg, function () {
                         parent.layui.table.reload('student_lists'); //重载表格

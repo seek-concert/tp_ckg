@@ -14,11 +14,16 @@ use think\Controller;
 
 class Login extends Controller
 {
+    //用户模型
+    protected $admin_model;
+    //学生模型
+    protected $student_model;
+
     public function __construct()
     {
         parent::__construct();
         $this->admin_model = model('Admin');
-
+        $this->student_model = model('Student');
     }
 
     /**
@@ -68,6 +73,14 @@ class Login extends Controller
             //验证是否被禁止
             if ($admin_info['status'] == 2) {
                 $this->error('该账户已被禁止登录');
+            }
+            if($admin_info['type'] == 2){
+                //总计
+                $total = $this->student_model->get_all_count(['mechanism_id' => $admin_info['id']]);
+                //本月小计
+                $subtotal = $this->student_model->where(['mechanism_id' => $admin_info['id']])->whereTime('input_time','month')->count();
+                session('total', $total);
+                session('subtotal', $subtotal);
             }
             session('username', $admin_info['username']);
             session('password', $admin_info['password']);
