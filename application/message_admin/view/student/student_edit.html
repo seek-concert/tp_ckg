@@ -151,7 +151,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">到达日期</label>
                         <div class="layui-input-block">
-                            <input type="text" class="layui-input" name="arrival" value="{$student_info['arrival']}"
+                            <input type="text" class="layui-input" name="arrival" value="{$student_info['arrival']=='0000-00-00'?'':$student_info['arrival']}"
                                    id="test-laydate-start" placeholder="到达日期">
                         </div>
                     </div>
@@ -159,7 +159,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">离校日期</label>
                         <div class="layui-input-block">
-                            <input type="text" class="layui-input" name="leave" value="{$student_info['leave']}"
+                            <input type="text" class="layui-input" name="leave" value="{$student_info['leave']=='0000-00-00'?'':$student_info['leave']}"
                                    id="test-laydate-end" placeholder="离校日期">
                         </div>
                     </div>

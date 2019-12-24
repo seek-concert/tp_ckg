@@ -23,6 +23,8 @@ class Student extends Base
     protected $course_model;
     //老师模型
     protected $teacher_model;
+    //住宿记录
+    protected $dorm_log_model;
 
     public function __construct()
     {
@@ -32,6 +34,7 @@ class Student extends Base
         $this->dorm_model = model('Dorm');
         $this->course_model = model('Course');
         $this->teacher_model = model('Teacher');
+        $this->dorm_log_model = model('DormLog');
     }
 
     /**
@@ -76,6 +79,10 @@ class Student extends Base
         }
         //列表信息
         $lists = $this->student_model->get_all_data_page($sqlmap, $page, $limit, 'id desc', 'id,student_id,name,status,phone,english,sex,age,nationality,passport,address,arrival,flight,curriculum_id,days,dorm_id,mechanism_id,leave,remarks,admin_id', ['admin','admins','curriculum','dorm']);
+        foreach ($lists as $k=>$v){
+            $lists[$k]['arrival'] = $v['arrival']=='0000-00-00'?'':$v['arrival'];
+            $lists[$k]['leave'] = $v['leave']=='0000-00-00'?'':$v['leave'];
+        }
         $return_data = [];
         $return_data['code'] = 1;
         $return_data['count'] = $this->student_model->get_all_count($sqlmap);
@@ -127,11 +134,28 @@ class Student extends Base
             $sqlmap['pay']  = isset($param['pay'])?$param['pay']:1;
             $sqlmap['mechanism_id']  = session('id');
             $sqlmap['admin_id']  = session('id');
+            //启动事务
+            $this->student_model->startTrans();
             //新增数据
-            $ret = $this->student_model->add_data($sqlmap);
-            if ($ret) {
+            $student_add = $this->student_model->add_data($sqlmap);
+            if(empty($sqlmap['dorm_id'])){
+                $dorm_log_add = true;
+            }else{
+                $log = [];
+                $log['student_id'] = $this->student_model->id;
+                $log['type'] = 1;
+                $log['dorm_id'] = $sqlmap['dorm_id'];
+                $log['inputtime'] = strtotime($sqlmap['arrival']);
+                $log['leavetime'] = strtotime($sqlmap['leave']);
+                $dorm_log_add = $this->dorm_log_model->add_data($log);
+            }
+            if ($student_add && $dorm_log_add) {
+                //提交
+                $this->teacher_model->commit();
                 $this->success('添加成功');
             } else {
+                //回滚
+                $this->teacher_model->rollback();
                 $this->error('添加出错，请重试');
             }
         }
@@ -186,11 +210,29 @@ class Student extends Base
             $sqlmap['remarks']  = isset($param['remarks'])?$param['remarks']:'';
             $sqlmap['pay']  = isset($param['pay'])?$param['pay']:1;
             $sqlmap['admin_id']  = session('id');
+            //启动事务
+            $this->student_model->startTrans();
             //修改数据
-            $ret = $this->student_model->update_data($sqlmap,['id' => $id]);
-            if ($ret) {
+            $student_edit = $this->student_model->update_data($sqlmap,['id' => $id]);
+            $dorm_log_info = $this->dorm_log_model->get_one_data(['student_id' => $id]);
+            $log = [];
+            $log['dorm_id'] = $sqlmap['dorm_id'];
+            $log['inputtime'] = strtotime($sqlmap['arrival']);
+            $log['leavetime'] = strtotime($sqlmap['leave']);
+            if($dorm_log_info){
+                $dorm_log_edit = $this->dorm_log_model->update_data($log,['id' => $dorm_log_info['id']]);
+            }else{
+                $log['student_id'] = $id;
+                $log['type'] = 1;
+                $dorm_log_edit = $this->dorm_log_model->add_data($log);
+            }
+            if ($student_edit && $dorm_log_edit) {
+                //提交
+                $this->teacher_model->commit();
                 $this->success('修改成功');
             } else {
+                //回滚
+                $this->teacher_model->rollback();
                 $this->error('修改出错，请重试');
             }
         }
