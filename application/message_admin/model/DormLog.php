@@ -14,5 +14,22 @@ use app\common\model\Base;
 
 class DormLog extends Base
 {
-    
+    //   //获取器--获取数据的字段值后自动转换为字符串描述
+    //   public function getInputtimeAttr($value)
+    //   {
+    //       return date('Y-m-d H:i:s',$value);
+    //   }
+
+    //    //获取器--获取数据的字段值后自动转换为字符串描述
+    //    public function getLeavetimeAttr($value)
+    //    {
+    //        return date('Y-m-d H:i:s',$value);
+    //    }
+
+    //关联学生信息
+    public function student()
+    {
+        return $this->hasOne('Student', 'id', 'student_id')->bind(
+            ['name','student_code'=>'student_id']);
+    }
 }
