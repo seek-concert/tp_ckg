@@ -20,26 +20,26 @@
                 <form class="layui-form" action="" id="form_submit_add">
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">编号<i style="color: red">*</i></label>
+                        <label class="layui-form-label">Numbering<i style="color: red">*</i></label>
                         <div class="layui-input-block">
                             <input type="text" name="identifier" required lay-verify="required" value=""
-                                   placeholder="请输入编号" autocomplete="off" class="layui-input">
+                                   placeholder="please enter numbering" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">老师<i style="color: red">*</i></label>
+                        <label class="layui-form-label">Teacher<i style="color: red">*</i></label>
                         <div class="layui-input-block">
                             <input type="text" name="username" required lay-verify="required" value=""
-                                   placeholder="请输入老师" autocomplete="off" class="layui-input">
+                                   placeholder="please enter teacher" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">教室<i style="color: red">*</i></label>
+                        <label class="layui-form-label">Classroom<i style="color: red">*</i></label>
                         <div class="layui-input-block">
                             <select name="classroom_id" class="layui-input">
-                                <option value="" >请选择！</option>
+                                <option value="" >please choose</option>
                                 {foreach $classroom_info as $k=>$v}
                                 <option value="{$v.id}" >{$v.username}</option>
                                 {/foreach}
@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">学科<i style="color: red">*</i></label>
+                        <label class="layui-form-label">Subject<i style="color: red">*</i></label>
                         <div class="layui-input-block">
                             {foreach $curriculum_info as $k=>$v}
                             <input type="checkbox" name="curriculum[]" lay-skin="primary" title="{$v.username}" value="{$v.id}">
@@ -57,29 +57,29 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">团体课<i style="color: red">*</i></label>
+                        <label class="layui-form-label">GroupLesson<i style="color: red">*</i></label>
                         <div class="layui-input-block">
                             <select name="team" class="layui-input">
-                                <option value="1">无</option>
-                                <option value="2">有</option>
+                                <option value="1">no</option>
+                                <option value="2">yes</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">状态<i style="color: red">*</i></label>
+                        <label class="layui-form-label">Status<i style="color: red">*</i></label>
                         <div class="layui-input-block">
                             <select name="status" class="layui-input">
-                                <option value="1">启用</option>
-                                <option value="2">停用</option>
+                                <option value="1">Enable</option>
+                                <option value="2">Disable</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <input type="button" value="取消" class="layui-btn layui-btn-primary" onclick="qx();">
-                            <input type="button" lay-submit lay-filter="submit" value="确认" class="layui-btn layui-btn-normal">
+                            <input type="button" value="cancel" class="layui-btn layui-btn-primary" onclick="qx();">
+                            <input type="button" lay-submit lay-filter="submit" value="confirm" class="layui-btn layui-btn-normal">
                         </div>
                     </div>
 

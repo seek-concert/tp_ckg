@@ -26,7 +26,7 @@ class Dorm extends Base
     //获取器--获取数据的字段值后自动转换为字符串描述
     public function getStatusAttr($value)
     {
-        $status = ['' => '', 1 => '启用', 2 => '停用'];
+        $status = ['' => '', 1 => 'Enable', 2 => 'Disable'];
         return $status[$value];
     }
 

@@ -19,37 +19,37 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">学号</label>
+                    <label class="layui-form-label">StudentID</label>
                     <div class="layui-input-block">
-                        <input type="text" name="student_id" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="student_id" placeholder="please enter" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">英文名</label>
+                    <label class="layui-form-label">EnglishName</label>
                     <div class="layui-input-block">
-                        <input type="text" name="english" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="english" placeholder="please enter" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">到达日期</label>
+                    <label class="layui-form-label">ArrivalDate</label>
                     <div class="layui-input-block">
-                        <input type="text" name="arrival" id="arrival" placeholder="请输入" autocomplete="off"
+                        <input type="text" name="arrival" id="arrival" placeholder="please enter" autocomplete="off"
                                class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">学业状态</label>
+                    <label class="layui-form-label">AcademicStatus</label>
                     <div class="layui-input-block">
                         <select name="status" class="layui-input">
-                            <option value="">请选择</option>
-                            <option value="1">未开始</option>
-                            <option value="2">学习中</option>
+                            <option value="">please choose</option>
+                            <option value="1">has not started</option>
+                            <option value="2">learning</option>
                         </select>
                     </div>
                 </div>
                 <div class="layui-inline">
                     <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-user-back-search">
-                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>查询
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>Inquire
                     </button>
                 </div>
             </div>
@@ -59,16 +59,16 @@
         <div class="layui-card-body">
             <div style="padding-bottom: 10px;display: none" id="student_all">
                 <button class="layui-btn layui-btn-sm" onclick="student_add()" data-type="add">
-                    <i class="layui-icon layui-icon-add-1"></i>添加
+                    <i class="layui-icon layui-icon-add-1"></i>AddStudent
                 </button>
                 <button class="layui-btn layui-btn-sm" onclick="dorm()" data-type="add">
-                    床位查询
+                    BedInquiry
                 </button>
             </div>
             <table id="student_lists" lay-filter="test"></table>
             <script type="text/html" id="barstudent">
-                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑信息</a>
-                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">编辑课程</a>
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">EditStudent</a>
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail">EditCourse</a>
             </script>
         </div>
     </div>
@@ -106,126 +106,126 @@
                 [ //表头
                     {
                         field: 'student_id',
-                        title: '学号',
+                        title: 'StudentID',
                         minWidth: 80,
                         align: 'center',
                     },
                     {
                         field: 'status',
-                        title: '学业状态',
+                        title: 'AcademicStatus',
                         minWidth: 80,
                         align: 'center',
                     },
                     {
                         field: 'name',
-                        title: '姓名',
+                        title: 'Name',
                         minWidth: 80,
                         align: 'center',
                     },
                     {
                         field: 'phone',
-                        title: '联系电话',
+                        title: 'ContactNumber',
                         minWidth: 110,
                         align: 'center',
                     },
                     {
                         field: 'english',
-                        title: '英文名',
+                        title: 'EnglishName',
                         minWidth: 100,
                         align: 'center',
                     },
                     {
                         field: 'sex',
-                        title: '性别',
+                        title: 'Sex',
                         minWidth: 80,
                         align: 'center',
                     },
                     {
                         field: 'age',
-                        title: '年龄',
+                        title: 'Age',
                         minWidth: 80,
                         align: 'center',
                     },
                     {
                         field: 'nationality',
-                        title: '国籍',
+                        title: 'Nationality',
                         minWidth: 80,
                         align: 'center',
                     },
                     {
                         field: 'passport',
-                        title: '护照号码',
+                        title: 'PassportNumber',
                         minWidth: 110,
                         align: 'center',
                     },
                     {
                         field: 'address',
-                        title: '家庭住址',
+                        title: 'Address',
                         minWidth: 150,
                         align: 'center',
                     },
                     {
                         field: 'arrival',
-                        title: '到达日期',
+                        title: 'ArrivalDate',
                         minWidth: 100,
                         align: 'center',
                     },
                     {
                         field: 'flight',
-                        title: '到达航班',
+                        title: 'ArrivalFlight',
                         minWidth: 100,
                         align: 'center',
                     },
                     {
                         field: 'c_name',
-                        title: '学科',
+                        title: 'Subject',
                         minWidth: 80,
                         align: 'center',
                     },
                     {
                         field: 'days',
-                        title: '学业天数',
+                        title: 'AcademicDays',
                         minWidth: 100,
                         align: 'center',
                     },
                     {
                         field: 'd_name',
-                        title: '寝室房号',
+                        title: 'RoomNumber',
                         minWidth: 100,
                         align: 'center',
                     },
                     {
                         field: 'd_type',
-                        title: '房间类型',
+                        title: 'RoomType',
                         minWidth: 100,
                         align: 'center',
                     },
                     {
                         field: 'm_name',
-                        title: '中介机构',
+                        title: 'Agency',
                         minWidth: 100,
                         align: 'center',
                     },
                     {
                         field: 'leave',
-                        title: '离校时间',
+                        title: 'LeaveDate',
                         minWidth: 100,
                         align: 'center',
                     },
                     {
                         field: 'remarks',
-                        title: '备注',
+                        title: 'Remark',
                         minWidth: 100,
                         align: 'center',
                     },
                     {
                         field: 'a_name',
-                        title: '最后编辑人',
+                        title: 'LastEditedBy',
                         align: 'center',
                         minWidth: 100,
                     },
                     {
-                        title: '操作',
+                        title: 'operating',
                         // fixed:'right',
                         align: 'center',
                         minWidth: 190,
@@ -264,16 +264,16 @@
                 var url = "{:url('student_curriculum','','',true)}/id/" + id;
                 edit_index = layer.open({
                     type: 2,
-                    title: '编辑课程',
+                    title: 'EditCourse',
                     area: ['90%', '90%'],
                     content: url
                 });
             } else if (layEvent === 'edit') {
-                //编辑
+                //编辑学生
                 var url = "{:url('student_edit','','',true)}/id/" + id;
                 edit_index = layer.open({
                     type: 2,
-                    title: '编辑学生',
+                    title: 'EditStudent',
                     area: ['90%', '90%'],
                     content: url
                 });
@@ -292,7 +292,7 @@
         var url = "{:url('student_add','','',true)}";
         add_index = layer.open({
             type: 2,
-            title: '添加学生',
+            title: 'AddStudent',
             area: ['90%', '90%'],
             content: url
         });
@@ -302,7 +302,7 @@
         var url = "{:url('dorm','','',true)}";
         add_index = layer.open({
             type: 2,
-            title: '床位查询',
+            title: 'BedInquiry',
             area: ['90%', '90%'],
             content: url
         });

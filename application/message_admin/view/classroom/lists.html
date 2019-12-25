@@ -19,24 +19,21 @@
         <div class="layui-form layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">日期</label>
+                    <label class="layui-form-label">Date</label>
                     <div class="layui-input-block">
-                        <input type="text" name="arrival" id="arrival" placeholder="请输入" autocomplete="off"
+                        <input type="text" name="arrival" id="arrival" placeholder="please enter" autocomplete="off"
                                class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-user-back-search">
-                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>查询
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>Inquire
                     </button>
                 </div>
             </div>
         </div>
         <div class="layui-card-body">
             <table id="lists" lay-filter="lists"></table>
-            <script type="text/html" id="bards">
-                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑信息</a>
-            </script>
         </div>
     </div>
 </div>
@@ -73,13 +70,13 @@
                 [ //表头
                     {
                         field: 'c_name',
-                        title: '房间',
+                        title: 'classroom',
                         minWidth: 30,
                         align: 'center',
                     },
                     {
                         field: 'username',
-                        title: '老师',
+                        title: 'teacher',
                         minWidth: 30,
                         align: 'center',
                     },

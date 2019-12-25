@@ -21,40 +21,40 @@
                     <input type="hidden" name="student_id" value="{$student_id}">
                     <div class="layui-form-item">
                         <label class="layui-form-label"></label>
-                        <label class="layui-form-label">课程</label>
+                        <label class="layui-form-label">course</label>
                         <label class="layui-form-label"></label>
-                        <label class="layui-form-label">老师</label>
+                        <label class="layui-form-label">teacher</label>
                         <label class="layui-form-label"></label>
-                        <label class="layui-form-label">教室</label>
+                        <label class="layui-form-label">classroom</label>
                         <label class="layui-form-label"></label>
-                        <label class="layui-form-label">课本</label>
+                        <label class="layui-form-label">textbook</label>
                     </div>
                     {foreach $course_info as $k=>$v}
                     <input type="hidden" name="id[{$k+1}]" value="{$v['id']}">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">第{$k+1}节<i style="color: red">*</i></label>
+                        <label class="layui-form-label">Section {$k+1}<i style="color: red">*</i></label>
                         <div class="layui-input-inline">
                             <select name="curriculum[{$k+1}]" lay-filter="curriculum{$k+1}" id="curriculum{$k+1}" class="layui-input">
-                                <option value="">请选择</option>
+                                <option value="">please choose</option>
                                 {foreach $curriculum_info as $z=>$x}
                                 <option value="{$x['id']}" {if $v['curriculum_id'] == $x['id']}selected{/if}>{$x['username']}</option>
                                 {/foreach}
-                                <option value="0" {if $v['curriculum_id'] == '0'}selected{/if}>自习</option>
+                                <option value="0" {if $v['curriculum_id'] == '0'}selected{/if}>Self study</option>
                             </select>
                         </div>
                         <div class="layui-input-inline">
                             <select name="teacher[{$k+1}]" id="teacher{$k+1}" lay-filter="teacher{$k+1}" class="layui-input">
-                                <option value="">请选择</option>
+                                <option value="">please choose</option>
                                 <option value="{$v['teacher_id']}" selected>{$v['t_name']}</option>
                             </select>
                         </div>
                         <div class="layui-input-inline">
                             <input type="text" id="classroom{$k+1}" value="{$v['c_name']}"
-                                   placeholder="教室" readonly="readonly" autocomplete="off" class="layui-input">
+                                   placeholder="classroom" readonly="readonly" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-input-inline">
                             <select name="textbook[{$k+1}]" id="textbook{$k+1}" class="layui-input">
-                                <option value="">请选择</option>
+                                <option value="">please choose</option>
                                 {foreach $v['book'] as $z=>$x}
                                 <option value="{$x['id']}" {if $x['id'] == $v['textbook_id']}selected{/if}>{$x['username']}</option>
                                 {/foreach}
@@ -65,11 +65,11 @@
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                             <div class="layui-input-inline">
-                                <input type="button" value="上次保存" class="layui-btn layui-btn-primary" onclick="sc();">
+                                <input type="button" value="Last saved" class="layui-btn layui-btn-primary" onclick="sc();">
                             </div>
                             <div class="layui-input-inline">
-                                <input type="button" value="取消" class="layui-btn layui-btn-primary" onclick="qx();">
-                                <input type="button" lay-submit lay-filter="submit" value="确认" class="layui-btn layui-btn-normal">
+                                <input type="button" value="cancel" class="layui-btn layui-btn-primary" onclick="qx();">
+                                <input type="button" lay-submit lay-filter="submit" value="confirm" class="layui-btn layui-btn-normal">
                             </div>
                         </div>
                     </div>
@@ -112,8 +112,8 @@
             var num = "{$k+1}";
             var student_id = "{$student_id}";
             if (curriculum_id != '') {
-                $('#teacher{$k+1}').html('<option value="">请选择</option>');
-                $('#textbook{$k+1}').html('<option value="">请选择</option>');
+                $('#teacher{$k+1}').html('<option value="">please choose</option>');
+                $('#textbook{$k+1}').html('<option value="">please choose</option>');
                 $('#classroom{$k+1}').val('');
                 form.render('select','curriculum{$k+1}');
                 var html = '';
@@ -125,15 +125,15 @@
                         $('#teacher{$k+1}').append(html);
                         form.render('select');
                     } else {
-                        $('#teacher{$k+1}').html('<option value="">请选择</option>');
-                        $('#textbook{$k+1}').html('<option value="">请选择</option>');
+                        $('#teacher{$k+1}').html('<option value="">please choose</option>');
+                        $('#textbook{$k+1}').html('<option value="">please choose</option>');
                         $('#classroom{$k+1}').val('');
                         form.render('select','curriculum{$k+1}');
                     }
                 })
             } else {
-                $('#teacher{$k+1}').html('<option value="">请选择</option>');
-                $('#textbook{$k+1}').html('<option value="">请选择</option>');
+                $('#teacher{$k+1}').html('<option value="">please choose</option>');
+                $('#textbook{$k+1}').html('<option value="">please choose</option>');
                 $('#classroom{$k+1}').val('');
                 form.render('select','curriculum{$k+1}');
             }
@@ -144,7 +144,7 @@
             var teacher_id = data.value;
             var curriculum_id = data.elem[data.elem.selectedIndex].dataset.test;
             if (teacher_id != '') {
-                $('#textbook{$k+1}').html('<option value="">请选择</option>');
+                $('#textbook{$k+1}').html('<option value="">please choose</option>');
                 $('#classroom{$k+1}').val('');
                 form.render('select','teacher{$k+1}');
                 var html = '';
@@ -157,13 +157,13 @@
                         $('#textbook{$k+1}').append(html);
                         form.render('select');
                     } else {
-                        $('#textbook{$k+1}').html('<option value="">请选择</option>');
+                        $('#textbook{$k+1}').html('<option value="">please choose</option>');
                         $('#classroom{$k+1}').val('');
                         form.render('select','teacher{$k+1}');
                     }
                 })
             } else {
-                $('#textbook{$k+1}').html('<option value="">请选择</option>');
+                $('#textbook{$k+1}').html('<option value="">please choose</option>');
                 $('#classroom{$k+1}').val('');
                 form.render('select','teacher{$k+1}');
             }

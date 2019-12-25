@@ -17,7 +17,7 @@
         </li>-->
         {if $Think.session.type == 2}
         <li class="layui-nav-item" style="color: #0C0C0C">
-            感谢你为本校提供了{$Think.session.total}个学生，本月{$Think.session.subtotal}个
+            Thank you for providing this school{$Think.session.total}Students，this month{$Think.session.subtotal}。
         </li>
         {/if}
     </ul>
@@ -32,7 +32,7 @@
                 <span class="layui-badge-dot"></span>
             </a> -->
         </li>
-        <li class="layui-nav-item layui-hide-xs" lay-unselect>
+        <!--<li class="layui-nav-item layui-hide-xs" lay-unselect>
             <a href="javascript:;" layadmin-event="theme">
                 <i class="layui-icon layui-icon-theme"></i>
             </a>
@@ -46,17 +46,17 @@
             <a href="javascript:;" layadmin-event="fullscreen">
                 <i class="layui-icon layui-icon-screen-full"></i>
             </a>
-        </li>
+        </li>-->
         <li class="layui-nav-item" lay-unselect>
             <a href="javascript:;">
                 <cite><?php echo session('username') ?></cite>
             </a>
             <dl class="layui-nav-child">
                 <!--<dd><a lay-href="{:url('admin/admin/info')}">基本资料</a></dd>-->
-                <dd><a lay-href="{:url('message_admin/admin/edit_password')}">修改密码</a></dd>
+                <dd><a lay-href="{:url('message_admin/admin/edit_password')}">change Password</a></dd>
                 <hr>
                 <dd layadmin-event="logout" style="text-align: center;"><a
-                        href="{:url('message_admin/base/out_login')}">退出</a></dd>
+                        href="{:url('message_admin/base/out_login')}">sign out</a></dd>
             </dl>
         </li>
 
