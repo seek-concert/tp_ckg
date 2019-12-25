@@ -146,7 +146,7 @@ class Classroom extends Base
         $limit = isset($param['limit'])?(int)$param['limit']:10;
         $arrival = isset($param['arrival'])?$param['arrival']:date('Y-m-d');
         //列表信息
-        $lists = $this->teacher_model->get_all_data_page(['status' => 1], $page, $limit, 'id desc', 'id,username,classroom_id',['classroom']);
+        $lists = $this->teacher_model->get_all_data_page(['status' => 1], $page, $limit, 'classroom_id asc', 'id,username,classroom_id',['classroom']);
         foreach ($lists as $k=>$v){
             $s1 = $this->course_model->get_one_value(['num'=>1,'teacher_id'=>$v['id'],'arrival' =>['<= time',$arrival],'leave' =>['>= time',$arrival]],'textbook_id')?:'';
             $s1 = $this->curriculum_model->get_one_value(['id' => $s1],'username')?:'';

@@ -61,7 +61,6 @@
                         <div class="layui-input-block">
                         <div class="layui-input-inline">
                             <input type="button" value="自动" class="layui-btn layui-btn-normal" onclick="zd();">
-                            <input type="button" value="上次保存" class="layui-btn layui-btn-primary" onclick="sc();">
                         </div>
                         <div class="layui-input-inline">
                             <input type="button" value="取消" class="layui-btn layui-btn-primary" onclick="qx();">
@@ -170,14 +169,18 @@
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index); //再执行关闭
     }
-    function sc() {
-        window.location.reload();
-    }
 
     function zd() {
         var student_id = "{$student_id}";
         $.post("{:url('curriculum_automatic')}", {student_id:student_id}, function (ret) {
-
+            if (ret.code == 1) {
+                layer.alert(ret.msg, function () {
+                    window.location.reload();
+                })
+            } else {
+                //提示
+                layer.alert(ret.msg)
+            }
         })
     }
 </script>
