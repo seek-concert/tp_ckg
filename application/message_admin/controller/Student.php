@@ -68,9 +68,11 @@ class Student extends Base
             $sqlmap['english'] = ['like', '%' . $english . '%'];
         }
         if (!empty($arrival)) {
-            $sqlmap['arrival'] = ['= time',$arrival];
+            $sqlmap['arrival'] = ['eq',$arrival];
         }
         if (!empty($status)) {
+
+
             $sqlmap['status'] = $status;
         }
         //是否为机构用户，机构用户自能查询自己添加的学生
@@ -78,7 +80,7 @@ class Student extends Base
             $sqlmap['mechanism_id'] = session('id');
         }
         //列表信息
-        $lists = $this->student_model->get_all_data_page($sqlmap, $page, $limit, 'id desc', 'id,student_id,name,status,phone,english,sex,age,nationality,passport,address,arrival,flight,curriculum_id,days,dorm_id,mechanism_id,leave,remarks,admin_id', ['admin','admins','curriculum','dorm']);
+        $lists = $this->student_model->get_all_data_page($sqlmap, $page, $limit, 'id desc', 'id,student_id,name,status,phone,english,sex,age,nationality,passport,address,arrival,flight,curriculum_id,days,dorm_id,mechanism_id,leave,remarks,admin_id', ['admin','admins','curriculum','dorm'])?:[];
         foreach ($lists as $k=>$v){
             $lists[$k]['arrival'] = $v['arrival']=='0000-00-00'?'':$v['arrival'];
             $lists[$k]['leave'] = $v['leave']=='0000-00-00'?'':$v['leave'];
