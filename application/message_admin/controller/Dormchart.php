@@ -53,7 +53,7 @@ class Dormchart extends Base
         //本月月末
         $endThismonth=mktime(23,59,59,$m,date('t'),$y);
         //获取本月寝室占用情况
-        $dorm_log = $this->dorm_log_model->get_all_data(['inputtime'=>['lt',$endThismonth],'leavetime'=>['gt',$beginThismonth]],'','id,username,student_id,type,dorm_id,inputtime,leavetime',['student']);
+        $dorm_log = $this->dorm_log_model->get_all_data(['inputtime'=>['lt',$endThismonth],'leavetime'=>['gt',$beginThismonth]],'','id,username,student_id,type,dorm_id,inputtime,leavetime',['student'])?:[];
         $data['years'] = $y;
         $data['months'] = $m;
         $data['days'] =  date("t",strtotime("$y-$m"));
@@ -89,14 +89,40 @@ class Dormchart extends Base
 
     }
 
-
     /**
      * 添加家长住宿
      *
      * @return void
      */
     public function dorm_add(){
-
+        if (request()->post()) {
+            $param = input('');
+            $rule = [
+                ['username', 'require', 'Name cannot be empty'],
+                ['dorm_id', 'require', 'Bed cannot be empty'],
+                ['inputtime', 'require', 'StartingTime cannot be empty'],
+                ['leavetime', 'require', 'LeaveTime cannot be empty'],
+            ];
+            //验证数据
+            $result = $this->validate($param, $rule);
+            if (true !== $result) {
+                // 验证失败 输出错误信息
+                $this->error($result);
+            }
+            //组装数据
+            $sqlmap = [];
+            $sqlmap['username'] = $param['username'];
+            $sqlmap['dorm_id'] = $param['dorm_id'];
+            $sqlmap['inputtime'] = strtotime($param['inputtime']);
+            $sqlmap['leavetime'] = strtotime($param['leavetime']);
+            //新增数据
+            $ret = $this->dorm_log_model->add_data($sqlmap);
+            if ($ret) {
+                $this->success('Added successfully');
+            } else {
+                $this->error('Add error, please try again');
+            }
+        }
         //获取所有床位列表
         $dorm_lists = $this->dorm_model->get_all_data(['status'=>1],'','id,username');
         $return_data = [];
@@ -111,14 +137,14 @@ class Dormchart extends Base
      */
     public function check_dorm(){
         $param = input('');
-        $time = strtotime($param['time']);
+        $inputtime = strtotime($param['inputtime']);
+        $leavetime = strtotime($param['leavetime']);
         $dorm_id = $param['dorm_id'];
         //入住时间检测
-        $dorm_count = $this->dorm_log_model->get_all_count(['inputtime'=>['lt',$time],'leavetime'=>['gt',$time],'dorm_id'=>$dorm_id]);
-        if($dorm_count > 0){
-            $this->error('该床位该时间段已占用');
+        $dorm_info = $this->dorm_log_model->get_all_data(['dorm_id'=>$dorm_id,'leavetime'=>['gt',$inputtime]],'','id,inputtime,leavetime');
+        if($dorm_info){
+            $this->error('The bed is occupied during this period');
         }
-        
-        $this->success('该床位可用');
+        $this->success('This bed is available');
     }
 }

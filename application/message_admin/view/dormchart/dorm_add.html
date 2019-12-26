@@ -19,20 +19,16 @@
             <div class="layui-form layui-card-header layuiadmin-card-header-auto">
                 <div class="layui-form-item">
                     <form class="layui-form" action="" id="form_submit_add">
-
-
-
                         <div class="layui-form-item">
-
                             <div class="layui-form-item">
-                                <label class="layui-form-label">姓名</label>
+                                <label class="layui-form-label">Name</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="title" required lay-verify="required" autocomplete="off" class="layui-input">
+                                    <input type="text" name="username" required lay-verify="required" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
 
                             <div class="layui-form-item">
-                                <label class="layui-form-label">选择框</label>
+                                <label class="layui-form-label">Bed</label>
                                 <div class="layui-input-block">
                                     <select name="dorm_id" id="dorm_id" lay-verify="required">
                                         {foreach $dorm_lists as $key => $vo}
@@ -43,22 +39,23 @@
                             </div>
 
                             <div class="layui-form-item">
-                                <label class="layui-form-label">入驻时间</label>
+                                <label class="layui-form-label">StartingTime</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="inputtime" id="inputtime" required lay-verify="required" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
-                                <label class="layui-form-label">离开时间</label>
+                                <label class="layui-form-label">LeaveTime</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="leavetime" id="leavetime" required lay-verify="required" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
-                                    <input type="button" lay-submit lay-filter="submit" value="确认"
-                                        class="layui-btn layui-btn-disabled sure_dorm">
-                                    <input type="button" value="取消" class="layui-btn layui-btn-primary" onclick="qx();">
+                                    <div class="layui-input-inline">
+                                        <input type="button" value="cancel" class="layui-btn layui-btn-primary" onclick="qx();">
+                                        <input type="button" lay-submit lay-filter="submit" value="confirm" class="layui-btn layui-btn-normal">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -79,24 +76,22 @@
             var form = layui.form;
             var laydate = layui.laydate;
             laydate.render({
-                elem: '#inputtime' ,
-                done: function(value){
-                    check_dorm(value,$('#dorm_id').val());
-                }
+                elem: '#inputtime',
+                btns: ['confirm']
             });
             laydate.render({
-                elem: '#leavetime' ,
+                elem: '#leavetime',
+                btns: ['confirm'],
                 done: function(value){
-                    check_dorm(value,$('#dorm_id').val());
+                    check_dorm();
                 }
             });
             form.on('submit(submit)', function (data) {
                 var gets = data.field;
                 var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                $.post("{:url('student_curriculum_add')}", gets, function (ret) {
+                $.post("{:url('dorm_add')}", gets, function (ret) {
                     if (ret.code == 1) {
                         layer.alert(ret.msg, function () {
-                            parent.layui.table.reload('student_lists'); //重载表格
                             parent.layer.close(index); //再执行关闭
                         })
                     } else {
@@ -115,16 +110,28 @@
         }
 
         //检测床位是否被占用
-        function check_dorm(time,dorm_id){
+        function check_dorm(){
+            var inputtime = $('#inputtime').val();
+            var leavetime = $('#leavetime').val();
+            var dorm_id = $('#dorm_id').val();
+            if(dorm_id == ''){
+                layer.alert('Please fill in the bed');
+                return;
+            }
+            if(inputtime == ''){
+                layer.alert('Please fill in the starting time');
+                return;
+            }
+            if(leavetime == ''){
+                layer.alert('Please fill in the leave time');
+                return;
+            }
             //得到床位号
-            $.post("{:url('check_dorm')}",{'time':time,'dorm_id':dorm_id},function(ret){
+            $.post("{:url('check_dorm')}",{'inputtime':inputtime,'leavetime':leavetime,'dorm_id':dorm_id},function(ret){
                 if(ret.code == 0){
-                    layer.msg(ret.msg);
-                    $('.sure_dorm').removeClass('layui-btn-normal');
-                    $('.sure_dorm').addClass('layui-btn-disabled');
-                }else{
-                    $('.sure_dorm').addClass('layui-btn-normal');
-                    $('.sure_dorm').removeClass('layui-btn-disabled');
+                    layer.alert(ret.msg);
+                    $('#inputtime').val('');
+                    $('#leavetime').val('');
                 }
             })
         }
