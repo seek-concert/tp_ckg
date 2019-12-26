@@ -266,7 +266,7 @@ class Student extends Base
     public function student_dorm()
     {
         $param = input('');
-        $start = isset($param['start'])?$param['start']:'';
+        $start = isset($param['start'])?strtotime($param['start']):'';
         $end = isset($param['end'])?$param['end']:'';
         $sex = isset($param['sex'])?$param['sex']:'';
         if(empty($start) || empty($end) || empty($sex)){
@@ -280,7 +280,7 @@ class Student extends Base
         foreach ($dorm as $k=>$v)
         {
             //查询寝室床位对应学生
-            $student_dorm[$v['id']] = $this->student_model->get_all_data(['dorm_id' =>$v['id'],'leave' =>['> time',$start]],'','id')?1:2;
+            $student_dorm[$v['id']] = $this->dorm_log_model->get_all_data(['dorm_id' =>$v['id'],'leavetime' =>['>',$start]],'','id')?1:2;
         }
         //寝室id
         $dorm_id = array_search('2',$student_dorm);
