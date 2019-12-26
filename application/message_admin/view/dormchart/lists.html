@@ -40,6 +40,9 @@
                         <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-user-back-search">
                             <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>查询
                         </button>
+                        <a class="layui-btn layuiadmin-btn-admin" lay-filter="LAY-user-back-search" onclick="add_parent()">
+                            <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i>添加家长住宿
+                        </a>
                     </div>
                 </div>
             </div>
@@ -141,12 +144,12 @@
     {/foreach}
 
     //添加
-    function dorm_add() {
+    function add_parent() {
         var url = "{:url('dorm_add','','',true)}";
         add_index = layer.open({
             type: 2,
             title: '添加信息',
-            area: ['90%', '90%'],
+            area: ['40%', '80%'],
             content: url
         });
     }

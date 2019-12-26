@@ -88,4 +88,37 @@ class Dormchart extends Base
         return $return_data;
 
     }
+
+
+    /**
+     * 添加家长住宿
+     *
+     * @return void
+     */
+    public function dorm_add(){
+
+        //获取所有床位列表
+        $dorm_lists = $this->dorm_model->get_all_data(['status'=>1],'','id,username');
+        $return_data = [];
+        $return_data['dorm_lists'] = !empty($dorm_lists)?$dorm_lists:[];
+        return view('',$return_data);
+    }
+
+    /**
+     * 检测床位是否被占用
+     *
+     * @return void
+     */
+    public function check_dorm(){
+        $param = input('');
+        $time = strtotime($param['time']);
+        $dorm_id = $param['dorm_id'];
+        //入住时间检测
+        $dorm_count = $this->dorm_log_model->get_all_count(['inputtime'=>['lt',$time],'leavetime'=>['gt',$time],'dorm_id'=>$dorm_id]);
+        if($dorm_count > 0){
+            $this->error('该床位该时间段已占用');
+        }
+        
+        $this->success('该床位可用');
+    }
 }
