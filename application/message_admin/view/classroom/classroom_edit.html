@@ -20,27 +20,27 @@
                 <form class="layui-form" action="" id="form_submit_add">
                     <input type="hidden" name="id" value="{$classroom_info['id']}">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">教室<i style="color: red">*</i></label>
+                        <label class="layui-form-label">Classroom<i style="color: red">*</i></label>
                         <div class="layui-input-block">
                             <input type="text" name="username" required lay-verify="required" value="{$classroom_info['username']}"
-                                   placeholder="请输入教室" autocomplete="off" class="layui-input">
+                                   placeholder="Please enter classroom" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">状态<i style="color: red">*</i></label>
+                        <label class="layui-form-label">Status<i style="color: red">*</i></label>
                         <div class="layui-input-block">
                             <select name="status" class="layui-input">
-                                <option value="1" {if $classroom_info['status']== '启用'}selected{/if}>启用</option>
-                                <option value="2" {if $classroom_info['status']== '停用'}selected{/if}>停用</option>
+                                <option value="1" {if $classroom_info['status']== 'Enable'}selected{/if}>Enable</option>
+                                <option value="2" {if $classroom_info['status']== 'Disable'}selected{/if}>Disable</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <input type="button" value="取消" class="layui-btn layui-btn-primary" onclick="qx();">
-                            <input type="button" lay-submit lay-filter="submit" value="确认" class="layui-btn layui-btn-normal">
+                            <input type="button" value="cancel" class="layui-btn layui-btn-primary" onclick="qx();">
+                            <input type="button" lay-submit lay-filter="submit" value="confirm" class="layui-btn layui-btn-normal">
                         </div>
                     </div>
 

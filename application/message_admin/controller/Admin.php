@@ -34,30 +34,30 @@ class Admin extends Base
             $password = isset($param['password']) ? $param['password'] : '';
             $repassword = isset($param['repassword']) ? $param['repassword'] : '';
             if ($oldpassword == '' || $password == '' || $repassword == '') {
-                $this->error('请勿非法访问');
+                $this->error('Do not access illegally');
             }
             if ($repassword != $password) {
-                $this->error('两次输入密码不一致');
+                $this->error('The passwords entered twice are inconsistent');
             }
             $id = session('id');
             if (!$id) {
-                $this->error('请勿非法访问');
+                $this->error('Do not access illegally');
             }
             //获取管理员资料
             $admin_info = $this->admin_model->get_one_data(['id' => $id]);
             //组装原密码
             $user_password = md5(md5($oldpassword) . $admin_info['code']);
             if ($user_password != $admin_info['password']) {
-                $this->error('原密码错误');
+                $this->error('The original password is wrong');
             }
             //组装新密码
             $new_password = md5(md5($password) . $admin_info['code']);
             //更新密码
             $ret = $this->admin_model->update_data(['password' => $new_password], ['id' => $id]);
             if ($ret) {
-                $this->success('修改登录密码成功,请重新登录');
+                $this->success('The login password was changed successfully, please log in again');
             } else {
-                $this->error('修改登录密码出错,请重试');
+                $this->error('Error changing login password, please try again');
             }
         }
         return view();

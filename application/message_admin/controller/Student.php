@@ -68,9 +68,11 @@ class Student extends Base
             $sqlmap['english'] = ['like', '%' . $english . '%'];
         }
         if (!empty($arrival)) {
-            $sqlmap['arrival'] = ['= time',$arrival];
+            $sqlmap['arrival'] = ['eq',$arrival];
         }
         if (!empty($status)) {
+
+
             $sqlmap['status'] = $status;
         }
         //是否为机构用户，机构用户自能查询自己添加的学生
@@ -78,7 +80,7 @@ class Student extends Base
             $sqlmap['mechanism_id'] = session('id');
         }
         //列表信息
-        $lists = $this->student_model->get_all_data_page($sqlmap, $page, $limit, 'id desc', 'id,student_id,name,status,phone,english,sex,age,nationality,passport,address,arrival,flight,curriculum_id,days,dorm_id,mechanism_id,leave,remarks,admin_id', ['admin','admins','curriculum','dorm']);
+        $lists = $this->student_model->get_all_data_page($sqlmap, $page, $limit, 'id desc', 'id,student_id,name,status,phone,english,sex,age,nationality,passport,address,arrival,flight,curriculum_id,days,dorm_id,mechanism_id,leave,remarks,admin_id', ['admin','admins','curriculum','dorm'])?:[];
         foreach ($lists as $k=>$v){
             $lists[$k]['arrival'] = $v['arrival']=='0000-00-00'?'':$v['arrival'];
             $lists[$k]['leave'] = $v['leave']=='0000-00-00'?'':$v['leave'];
@@ -101,9 +103,9 @@ class Student extends Base
         $student_id = "c".str_pad(($student_id+1),5,"0",STR_PAD_LEFT );
         if (request()->post()) {
             $rule = [
-                ['name', 'require', '姓名不能为空'],
-                ['phone', 'require', '联系电话不能为空'],
-                ['curriculum_id', 'require', '学科不能为空'],
+                ['name', 'require', 'Name cannot be empty'],
+                ['phone', 'require', 'contact number can not be blank'],
+                ['curriculum_id', 'require', 'Subject cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -152,11 +154,11 @@ class Student extends Base
             if ($student_add && $dorm_log_add) {
                 //提交
                 $this->teacher_model->commit();
-                $this->success('添加成功');
+                $this->success('Added successfully');
             } else {
                 //回滚
                 $this->teacher_model->rollback();
-                $this->error('添加出错，请重试');
+                $this->error('Add error, please try again');
             }
         }
         //获取学科
@@ -175,13 +177,13 @@ class Student extends Base
         $param = input('');
         $id = isset($param['id'])?(int)$param['id']:0;
         if($id == 0){
-            $this->error('请勿非法访问');
+            $this->error('Do not access illegally');
         }
         if (request()->post()) {
             $rule = [
-                ['name', 'require', '姓名不能为空'],
-                ['phone', 'require', '联系电话不能为空'],
-                ['curriculum_id', 'require', '学科不能为空'],
+                ['name', 'require', 'Name cannot be empty'],
+                ['phone', 'require', 'contact number can not be blank'],
+                ['curriculum_id', 'require', 'Subject cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -220,7 +222,11 @@ class Student extends Base
             $log['inputtime'] = strtotime($sqlmap['arrival']);
             $log['leavetime'] = strtotime($sqlmap['leave']);
             if($dorm_log_info){
-                $dorm_log_edit = $this->dorm_log_model->update_data($log,['id' => $dorm_log_info['id']]);
+                if($log['dorm_id'] == $dorm_log_info['dorm_id']){
+                    $dorm_log_edit = true;
+                }else{
+                    $dorm_log_edit = $this->dorm_log_model->update_data($log,['id' => $dorm_log_info['id']]);
+                }
             }else{
                 $log['student_id'] = $id;
                 $log['type'] = 1;
@@ -229,11 +235,11 @@ class Student extends Base
             if ($student_edit && $dorm_log_edit) {
                 //提交
                 $this->teacher_model->commit();
-                $this->success('修改成功');
+                $this->success('Successfully modified');
             } else {
                 //回滚
                 $this->teacher_model->rollback();
-                $this->error('修改出错，请重试');
+                $this->error('Edit error, please try again');
             }
         }
         //获取学生信息
@@ -264,12 +270,12 @@ class Student extends Base
         $end = isset($param['end'])?$param['end']:'';
         $sex = isset($param['sex'])?$param['sex']:'';
         if(empty($start) || empty($end) || empty($sex)){
-            $this->error('请完整时间,性别！');
+            $this->error('Please complete time, gender');
         }
         //查询出所有寝室床位
         $dorm = $this->dorm_model->get_all_data(['status' => 1,'type' => $sex],'','id');
         if(empty($dorm)){
-            $this->error('无床位！');
+            $this->error('No bed');
         }
         foreach ($dorm as $k=>$v)
         {
@@ -279,10 +285,10 @@ class Student extends Base
         //寝室id
         $dorm_id = array_search('2',$student_dorm);
         if(empty($dorm_id)){
-            $this->error('无床位！');
+            $this->error('No bed');
         }
         $dorm = $this->dorm_model->get_one_data(['id'=>$dorm_id]);
-        $this->success('有床位','',$dorm);
+        $this->success('With bed','',$dorm);
     }
 
     /**
@@ -294,7 +300,7 @@ class Student extends Base
         $param = input('');
         $id = isset($param['id'])?(int)$param['id']:0;
         if($id == 0){
-            $this->error('请勿非法访问');
+            $this->error('Do not access illegally');
         }
         //查询课表信息
         $course_info = $this->course_model->get_all_data(['student_id' => $id],'id asc','id,curriculum_id,teacher_id,textbook_id',['teacher','classroom']);
@@ -321,15 +327,12 @@ class Student extends Base
     /**
      * 获取老师
      */
-    public function get_teacher()
+    public function get_teacher($num = '',$curriculum_id='',$student_id='')
     {
-        $param = input('');
-        //选中的第几节
-        $num = $param['num'];
         //获取课程信息
-        $curriculum_info = $this->curriculum_model->get_one_data(['id' =>$param['curriculum_id']],'','id,username,pid,type');
+        $curriculum_info = $this->curriculum_model->get_one_data(['id' =>$curriculum_id],'','id,username,pid,type');
         $row = [];
-        $row['cid'] = $param['curriculum_id'];
+        $row['cid'] = $curriculum_id;
         if($curriculum_info['type'] == 2){
             //获取老师
             $teacher_info = $this->teacher_model->get_all_data('find_in_set('.$curriculum_info['pid'].',curriculum) and status = 1 and team = 2','','id,username,classroom_id');
@@ -337,9 +340,9 @@ class Student extends Base
             return $row;
         }else{
             //查询课表
-            $course_info = $this->course_model->get_all_data(['curriculum_id' =>$param['curriculum_id'] , 'num' => $num],'','id,leave,teacher_id');
+            $course_info = $this->course_model->get_all_data(['curriculum_id' =>$curriculum_id , 'num' => $num],'','id,leave,teacher_id');
             //获取学生信息
-            $student_info = $this->student_model->get_one_data(['id' => $param['student_id']],'','id,arrival');
+            $student_info = $this->student_model->get_one_data(['id' => $student_id],'','id,arrival');
             if (empty($course_info)) {
                 //获取老师
                 $teacher_info = $this->teacher_model->get_all_data('find_in_set('.$curriculum_info['pid'].',curriculum) and status = 1','','id,username,classroom_id');
@@ -506,13 +509,12 @@ class Student extends Base
     /**
      * 获取教室和课本
      */
-    public function get_textbook()
+    public function get_textbook($teacher_id='',$curriculum_id='')
     {
-        $param = input('');
         //获取教室
-        $teacher_info = $this->teacher_model->get_one_data(['id' => $param['teacher_id']],'','classroom_id',['classroom']);
+        $teacher_info = $this->teacher_model->get_one_data(['id' => $teacher_id],'','classroom_id',['classroom']);
         //获取课本
-        $textbook_info = $this->curriculum_model->get_all_data(['pid' =>$param['curriculum_id']]);
+        $textbook_info = $this->curriculum_model->get_all_data(['pid' =>$curriculum_id]);
         $row = [];
         $row['teacher_info'] = $teacher_info;
         $row['textbook_info'] = $textbook_info;
@@ -527,9 +529,9 @@ class Student extends Base
         $param = input('');
         if (request()->post()) {
             $rule = [
-                ['curriculum', 'require', '课程不能为空'],
-                ['teacher', 'require', '老师不能为空'],
-                ['textbook', 'require', '课本不能为空'],
+                ['curriculum', 'require', 'Course cannot be empty'],
+                ['teacher', 'require', 'Teacher cannot be empty'],
+                ['textbook', 'require', 'Textbook cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -555,9 +557,9 @@ class Student extends Base
             //新增数据
             $ret = $this->course_model->saveAll($sqlmap);
             if ($ret) {
-                $this->success('编辑成功');
+                $this->success('Edited successfully');
             } else {
-                $this->error('编辑出错，请重试');
+                $this->error('Edit error, please try again');
             }
         }
     }
@@ -570,9 +572,9 @@ class Student extends Base
         $param = input('');
         if (request()->post()) {
             $rule = [
-                ['curriculum', 'require', '课程不能为空'],
-                ['teacher', 'require', '老师不能为空'],
-                ['textbook', 'require', '课本不能为空'],
+                ['curriculum', 'require', 'Course cannot be empty'],
+                ['teacher', 'require', 'Teacher cannot be empty'],
+                ['textbook', 'require', 'Textbook cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -588,12 +590,12 @@ class Student extends Base
                 $sqlmap[$k]['teacher_id'] = $param['teacher'][$k];
                 $sqlmap[$k]['textbook_id'] = $param['textbook'][$k];
             }
-            //新增数据
+            //修改数据
             $ret = $this->course_model->isUpdate()->saveAll($sqlmap);
             if ($ret) {
-                $this->success('编辑成功');
+                $this->success('Edited successfully');
             } else {
-                $this->error('编辑出错，请重试');
+                $this->error('Edit error, please try again');
             }
         }
     }
@@ -609,46 +611,91 @@ class Student extends Base
         //获取学科对应课程节数
         $xk_info = $this->curriculum_model->get_one_data(['id' => $student_info['curriculum_id']],'','id,username,one,team');
         //获取一对一课程
-        $kc_one =  $this->curriculum_model->get_all_data(['pid' => $student_info['curriculum_id'],'type' => 1],'','id,username');
+        $kc_one = $this->curriculum_model->get_all_data(['pid' => $student_info['curriculum_id'],'type' => 1],'','id,username');
         //获取团体课程
-        $kc_team =  $this->curriculum_model->get_all_data(['pid' => $student_info['curriculum_id'],'type' => 2],'','id,username');
-        //组合数据
+        $kc_team = $this->curriculum_model->get_all_data(['pid' => $student_info['curriculum_id'],'type' => 2],'','id,username');
+        //课程数
+        $num = ['0'=>'','1'=>'','2'=>'','3'=>'','4'=>'','5'=>'','6'=>'','7'=>''];
+        //放入课程
         $data = [];
-        $one = 1;
-        $team = 1;
-        for ($i=1;$i<10;$i++){
-            $data[$i]['student_id'] = $student_info['id'];
-            $data[$i]['num'] = $i;
-            $data[$i]['arrival'] = $student_info['arrival'];
-            $data[$i]['leave'] = $student_info['leave'];
-            if($one <= $xk_info['one']){
-                //课程
-                $data[$i]['curriculum_id'] = $kc_one[$i];
-                //老师
-                $data[$i]['teacher_id'] = 'one'.$i;
-                //课本
-                $data[$i]['teacher'] = 'one'.$i;
-                $one++;
-                continue;
-            }
-            if($team <= $xk_info['team']){
-                //课程
-                $data[$i]['curriculum_id'] = 'team'.$i;
-                //老师
-                $data[$i]['teacher_id'] = 'team'.$i;
-                //课本
-                $data[$i]['teacher'] = 'team'.$i;
-                $team++;
-                continue;
-            }
-            //课程
-            $data[$i]['curriculum_id'] = 0;
-            //老师
-            $data[$i]['teacher_id'] = 0;
-            //课本
-            $data[$i]['teacher'] = [];
+        for ($i=1;$i<=$xk_info['one'];$i++){
+            $rand = array_rand($num);
+            $data[$rand] = $kc_one[array_rand($kc_one)]['id'];
+            unset($num[$rand]);
         }
-        dump($data);exit;
+        for ($i=1;$i<=$xk_info['team'];$i++){
+            $rand = array_rand($num);
+            $data[$rand] = $kc_team[array_rand($kc_team)]['id'];
+            unset($num[$rand]);
+        }
+        //依靠键排正序
+        ksort($data);
+        //组合课程
+        $rows = [];
+        for ($i=1;$i<10;$i++){
+            for ($j=0;$j<count($data);$j++){
+                //查询老师
+                $teacher = $this->get_teacher($i,$data[$j],$student_info['id']);
+                //是否有老师
+                if($teacher['teacher_info']){
+                    //选择老师
+                    $count = count($teacher['teacher_info']);
+                    if($count > 1){
+                        //组装每个老师目前有教多少课
+                        $teacher_num = [];
+                        foreach ($teacher['teacher_info'] as $k=>$v) {
+                            $teacher_num[$v['id']] = $this->course_model->get_all_count(['teacher_id'=>$v['id']]);
+                        }
+                        //找出最小值
+                        $min = min($teacher_num);
+                        //找出课最少的老师
+                        $teacher_min = [];
+                        foreach($teacher_num as $k=>$v){
+                            if($v == $min){
+                                $teacher_min[$k] = $v;
+                            }
+                        }
+                        $rows[$i]['teacher_id'] = array_rand($teacher_min);
+                    }else{
+                        $rows[$i]['teacher_id'] = $teacher['teacher_info'][0]['id'];
+                    }
+                    $rows[$i]['curriculum_id'] = $data[$j];
+                    $rows[$i]['student_id'] = $student_info['id'];
+                    $rows[$i]['arrival'] = $student_info['arrival'];
+                    $rows[$i]['leave'] = $student_info['leave'];
+                    $rows[$i]['num'] = $i;
+                    unset($data[$j]);
+                    $data = array_merge($data);
+                    break;
+                }
+                //达到最大时没有找到老师，填充为自习
+                if($j == count($data) && empty($rows[$i])){
+                    $rows[$i]['curriculum_id'] = 0;
+                    $rows[$i]['teacher_id'] = 0;
+                    $rows[$i]['textbook_id'] = 0;
+                    $rows[$i]['student_id'] = $student_info['id'];
+                    $rows[$i]['arrival'] = $student_info['arrival'];
+                    $rows[$i]['leave'] = $student_info['leave'];
+                    $rows[$i]['num'] = $i;
+                }
+            }
+        }
+        if(count($rows) == 8){
+            $rows[9]['curriculum_id'] = 0;
+            $rows[9]['teacher_id'] = 0;
+            $rows[9]['textbook_id'] = 0;
+            $rows[9]['student_id'] = $student_info['id'];
+            $rows[9]['arrival'] = $student_info['arrival'];
+            $rows[9]['leave'] = $student_info['leave'];
+            $rows[9]['num'] = 9;
+        }
+        //新增数据
+        $ret = $this->course_model->saveAll($rows);
+        if ($ret) {
+            $this->success('Automatic class schedule succeeded');
+        } else {
+            $this->error('Auto-schedule failed, please try again');
+        }
     }
 
 }

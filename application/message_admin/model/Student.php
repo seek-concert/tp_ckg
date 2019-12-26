@@ -51,14 +51,14 @@ class Student extends Base
     //获取器--获取数据的字段值后自动转换为字符串描述
     public function getStatusAttr($value)
     {
-        $status = ['' => '', 1 => '未开始', 2 => '学习中'];
+        $status = ['' => '', 1 => 'has not started', 2 => 'learning'];
         return $status[$value];
     }
 
     //获取器--获取数据的字段值后自动转换为字符串描述
     public function getSexAttr($value)
     {
-        $status = ['' => '', 1 => '男', 2 => '女'];
+        $status = ['' => '', 1 => 'male', 2 => 'female'];
         return $status[$value];
     }
 

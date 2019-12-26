@@ -65,7 +65,7 @@ class Classroom extends Base
 
         if (request()->post()) {
             $rule = [
-                ['username', 'require', '教室不能为空'],
+                ['username', 'require', 'Classroom cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -79,9 +79,9 @@ class Classroom extends Base
             //新增数据
             $ret = $this->classroom_model->add_data($sqlmap);
             if ($ret) {
-                $this->success('添加成功');
+                $this->success('Added successfully');
             } else {
-                $this->error('添加出错，请重试');
+                $this->error('Add error, please try again');
             }
         }
         return view();
@@ -95,12 +95,12 @@ class Classroom extends Base
         $param = input('');
         $id = isset($param['id'])?(int)$param['id']:0;
         if($id == 0){
-            $this->error('请勿非法访问');
+            $this->error('Do not access illegally');
         }
         if (request()->post()) {
             $rule = [
-                ['username', 'require', '教室不能为空'],
-                ['status', 'require', '状态不能为空'],
+                ['username', 'require', 'Classroom cannot be empty'],
+                ['status', 'require', 'Status cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -115,9 +115,9 @@ class Classroom extends Base
             //修改数据
             $ret = $this->classroom_model->update_data($sqlmap,['id' => $id]);
             if ($ret) {
-                $this->success('修改成功');
+                $this->success('Successfully modified');
             } else {
-                $this->error('修改出错，请重试');
+                $this->error('Edit error, please try again');
             }
         }
         $classroom_info = $this->classroom_model->get_one_data(['id'=>$id]);
@@ -146,7 +146,7 @@ class Classroom extends Base
         $limit = isset($param['limit'])?(int)$param['limit']:10;
         $arrival = isset($param['arrival'])?$param['arrival']:date('Y-m-d');
         //列表信息
-        $lists = $this->teacher_model->get_all_data_page(['status' => 1], $page, $limit, 'id desc', 'id,username,classroom_id',['classroom']);
+        $lists = $this->teacher_model->get_all_data_page(['status' => 1], $page, $limit, 'classroom_id asc', 'id,username,classroom_id',['classroom']);
         foreach ($lists as $k=>$v){
             $s1 = $this->course_model->get_one_value(['num'=>1,'teacher_id'=>$v['id'],'arrival' =>['<= time',$arrival],'leave' =>['>= time',$arrival]],'textbook_id')?:'';
             $s1 = $this->curriculum_model->get_one_value(['id' => $s1],'username')?:'';

@@ -19,12 +19,12 @@
         <div class="layui-card-body">
             <div style="padding-bottom: 10px;display: none" id="classroom_all">
                 <button class="layui-btn layui-btn-sm" onclick="classroom_add()" data-type="add">
-                    <i class="layui-icon layui-icon-add-1"></i>添加
+                    <i class="layui-icon layui-icon-add-1"></i>Add
                 </button>
             </div>
             <table id="classroom_lists" lay-filter="classroom"></table>
             <script type="text/html" id="bards">
-                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑信息</a>
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">Edit</a>
             </script>
         </div>
     </div>
@@ -61,18 +61,18 @@
                 [ //表头
                     {
                         field: 'username',
-                        title: '教室',
+                        title: 'Classroom',
                         minWidth: 80,
                         align: 'center',
                     },
                     {
                         field: 'status',
-                        title: '状态',
+                        title: 'Status',
                         minWidth: 80,
                         align: 'center',
                     },
                     {
-                        title: '操作',
+                        title: 'operating',
                         // fixed:'right',
                         align: 'center',
                         minWidth: 190,
@@ -98,7 +98,7 @@
                 var url = "{:url('classroom_edit','','',true)}/id/" + id;
                 edit_index = layer.open({
                     type: 2,
-                    title: '编辑信息',
+                    title: 'Edit',
                     area: ['90%', '90%'],
                     content: url
                 });
@@ -111,7 +111,7 @@
         var url = "{:url('classroom_add','','',true)}";
         add_index = layer.open({
             type: 2,
-            title: '添加信息',
+            title: 'Add',
             area: ['90%', '90%'],
             content: url
         });

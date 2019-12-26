@@ -21,38 +21,38 @@
                     <input type="hidden" name="student_id" value="{$student_id}">
                     <div class="layui-form-item">
                         <label class="layui-form-label"></label>
-                        <label class="layui-form-label">课程</label>
+                        <label class="layui-form-label">course</label>
                         <label class="layui-form-label"></label>
-                        <label class="layui-form-label">老师</label>
+                        <label class="layui-form-label">teacher</label>
                         <label class="layui-form-label"></label>
-                        <label class="layui-form-label">教室</label>
+                        <label class="layui-form-label">classroom</label>
                         <label class="layui-form-label"></label>
-                        <label class="layui-form-label">课本</label>
+                        <label class="layui-form-label">textbook</label>
                     </div>
                     {for start="1" end="10"}
                     <div class="layui-form-item">
-                        <label class="layui-form-label">第{$i}节<i style="color: red">*</i></label>
+                        <label class="layui-form-label">Section {$i}<i style="color: red">*</i></label>
                         <div class="layui-input-inline">
                             <select name="curriculum[{$i}]" lay-filter="curriculum{$i}" id="curriculum{$i}" class="layui-input">
-                                <option value="">请选择</option>
+                                <option value="">please choose</option>
                                 {foreach $curriculum_info as $k=>$v}
                                     <option value="{$v['id']}">{$v['username']}</option>
                                 {/foreach}
-                                <option value="0">自习</option>
+                                <option value="0">Self study</option>
                             </select>
                         </div>
                         <div class="layui-input-inline">
                             <select name="teacher[{$i}]" id="teacher{$i}" lay-filter="teacher{$i}" class="layui-input">
-                                <option value="">请选择</option>
+                                <option value="">please choose</option>
                             </select>
                         </div>
                         <div class="layui-input-inline">
                             <input type="text" id="classroom{$i}" value=""
-                                   placeholder="教室" readonly="readonly" autocomplete="off" class="layui-input">
+                                   placeholder="classroom" readonly="readonly" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-input-inline">
                             <select name="textbook[{$i}]" id="textbook{$i}" class="layui-input">
-                                <option value="">请选择</option>
+                                <option value="">please choose</option>
                             </select>
                         </div>
                     </div>
@@ -60,12 +60,11 @@
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                         <div class="layui-input-inline">
-                            <input type="button" value="自动" class="layui-btn layui-btn-normal" onclick="zd();">
-                            <input type="button" value="上次保存" class="layui-btn layui-btn-primary" onclick="sc();">
+                            <input type="button" value="automatic" class="layui-btn layui-btn-normal" onclick="zd();">
                         </div>
                         <div class="layui-input-inline">
-                            <input type="button" value="取消" class="layui-btn layui-btn-primary" onclick="qx();">
-                            <input type="button" lay-submit lay-filter="submit" value="确认" class="layui-btn layui-btn-normal">
+                            <input type="button" value="cancel" class="layui-btn layui-btn-primary" onclick="qx();">
+                            <input type="button" lay-submit lay-filter="submit" value="confirm" class="layui-btn layui-btn-normal">
                         </div>
                         </div>
                     </div>
@@ -170,14 +169,18 @@
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index); //再执行关闭
     }
-    function sc() {
-        window.location.reload();
-    }
 
     function zd() {
         var student_id = "{$student_id}";
         $.post("{:url('curriculum_automatic')}", {student_id:student_id}, function (ret) {
-
+            if (ret.code == 1) {
+                layer.alert(ret.msg, function () {
+                    window.location.reload();
+                })
+            } else {
+                //提示
+                layer.alert(ret.msg)
+            }
         })
     }
 </script>

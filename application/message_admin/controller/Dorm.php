@@ -59,8 +59,8 @@ class Dorm extends Base
 
         if (request()->post()) {
             $rule = [
-                ['username', 'require', '床位不能为空'],
-                ['type', 'require', '性别不能为空'],
+                ['username', 'require', 'Bed cannot be empty'],
+                ['type', 'require', 'Sex cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -75,9 +75,9 @@ class Dorm extends Base
             //新增数据
             $ret = $this->dorm_model->add_data($sqlmap);
             if ($ret) {
-                $this->success('添加成功');
+                $this->success('Added successfully');
             } else {
-                $this->error('添加出错，请重试');
+                $this->error('Add error, please try again');
             }
         }
         return view();
@@ -91,13 +91,13 @@ class Dorm extends Base
         $param = input('');
         $id = isset($param['id'])?(int)$param['id']:0;
         if($id == 0){
-            $this->error('请勿非法访问');
+            $this->error('Do not access illegally');
         }
         if (request()->post()) {
             $rule = [
-                ['username', 'require', '床位不能为空'],
-                ['type', 'require', '性别不能为空'],
-                ['status', 'require', '状态不能为空'],
+                ['username', 'require', 'Bed cannot be empty'],
+                ['type', 'require', 'Sex cannot be empty'],
+                ['status', 'require', 'Status cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -113,9 +113,9 @@ class Dorm extends Base
             //修改数据
             $ret = $this->dorm_model->update_data($sqlmap,['id' => $id]);
             if ($ret) {
-                $this->success('修改成功');
+                $this->success('Successfully modified');
             } else {
-                $this->error('修改出错，请重试');
+                $this->error('Edit error, please try again');
             }
         }
         $dorm_info = $this->dorm_model->get_one_data(['id'=>$id]);
