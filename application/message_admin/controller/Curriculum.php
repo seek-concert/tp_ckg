@@ -114,7 +114,7 @@ class Curriculum extends Base
                     $sqlmap['one'] = $param['one'];
                     $sqlmap['team'] = $param['team'];
                 }else{
-                    $this->error('一对一加团体课数量为8');
+                    $this->error('One to one plus group lessons is 8');
                 }
             }else{
                 $sqlmap['level'] = $level+1;
@@ -124,12 +124,12 @@ class Curriculum extends Base
                     if($type == 1){
                         $nums = $this->curriculum_model->get_all_count(['pid' => $id,'type' => $type]);
                         if($nums >= $curriculum_info['one']){
-                            $this->error('课程已满！');
+                            $this->error('Course is full');
                         }
                     }else if($type == 2){
                         $nums = $this->curriculum_model->get_all_count(['pid' => $id,'type' => $type]);
                         if($nums >= $curriculum_info['team']){
-                            $this->error('课程已满！');
+                            $this->error('Course is full');
                         }
                     }
                     $sqlmap['type'] = $type;
@@ -138,9 +138,9 @@ class Curriculum extends Base
             //新增数据
             $ret = $this->curriculum_model->add_data($sqlmap);
             if ($ret) {
-                $this->success('添加成功');
+                $this->success('Added successfully');
             } else {
-                $this->error('添加出错，请重试');
+                $this->error('Add error, please try again');
             }
         }
     }
@@ -173,15 +173,15 @@ class Curriculum extends Base
                     $sqlmap['one'] = $param['one'];
                     $sqlmap['team'] = $param['team'];
                 }else{
-                    $this->error('一对一加团体课数量为8');
+                    $this->error('One to one plus group lessons is 8');
                 }
             }
             //新增数据
             $ret = $this->curriculum_model->update_data($sqlmap,['id' => $param['id']]);
             if ($ret) {
-                $this->success('修改成功');
+                $this->success('Successfully modified');
             } else {
-                $this->error('修改出错，请重试');
+                $this->error('Edit error, please try again');
             }
         }
     }

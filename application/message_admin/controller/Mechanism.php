@@ -60,8 +60,8 @@ class Mechanism extends Base
 
         if (request()->post()) {
             $rule = [
-                ['username', 'require', '机构不能为空'],
-                ['password', 'require|length:6,25', '密码不能为空|密码长度为6-25位'],
+                ['username', 'require', 'Mechanism cannot be empty'],
+                ['password', 'require|length:6,25', 'Password cannot be empty | Password length is 6-25 digits'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -79,9 +79,9 @@ class Mechanism extends Base
             //新增数据
             $ret = $this->mechanism_model->add_data($sqlmap);
             if ($ret) {
-                $this->success('添加成功');
+                $this->success('Added successfully');
             } else {
-                $this->error('添加出错，请重试');
+                $this->error('Add error, please try again');
             }
         }
         return view();
@@ -95,11 +95,11 @@ class Mechanism extends Base
         $param = input('');
         $id = isset($param['id'])?(int)$param['id']:0;
         if($id == 0){
-            $this->error('请勿非法访问');
+            $this->error('Do not access illegally');
         }
         if (request()->post()) {
             $rule = [
-                ['username', 'require', '机构不能为空'],
+                ['username', 'require', 'Mechanism cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -112,7 +112,7 @@ class Mechanism extends Base
             //检查是否修改密码
             if(!empty($param['password'])){
                 $rule = [
-                    ['password', 'length:6,25', '密码长度为6-25位'],
+                    ['password', 'length:6,25', 'Password length is 6-25 characters'],
                 ];
                 //验证数据
                 $result = $this->validate($param, $rule);
@@ -130,9 +130,9 @@ class Mechanism extends Base
             //修改数据
             $ret = $this->mechanism_model->update_data($sqlmap,['id' => $id]);
             if ($ret) {
-                $this->success('修改成功');
+                $this->success('Successfully modified');
             } else {
-                $this->error('修改出错，请重试');
+                $this->error('Edit error, please try again');
             }
         }
         $mechanism_info = $this->mechanism_model->get_one_data(['id'=>$id]);

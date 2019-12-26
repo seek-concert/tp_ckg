@@ -76,12 +76,12 @@ class Teacher extends Base
         $param = input('');
         if (request()->post()) {
             $rule = [
-                ['identifier', 'require', '编号不能为空'],
-                ['username', 'require', '老师不能为空'],
-                ['classroom_id', 'require', '教室不能为空'],
-                ['curriculum', 'require', '学科不能为空'],
-                ['team', 'require', '团体课不能为空'],
-                ['status', 'require', '状态不能为空'],
+                ['identifier', 'require', 'Number cannot be empty'],
+                ['username', 'require', 'Teacher cannot be empty'],
+                ['classroom_id', 'require', 'Classroom cannot be empty'],
+                ['curriculum', 'require', 'Subject cannot be empty'],
+                ['team', 'require', 'Group class cannot be empty'],
+                ['status', 'require', 'Status cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -106,11 +106,11 @@ class Teacher extends Base
             if ($teacher_add && $classroom_edit) {
                 //提交
                 $this->teacher_model->commit();
-                $this->success('添加成功');
+                $this->success('Added successfully');
             } else {
                 //回滚
                 $this->teacher_model->rollback();
-                $this->error('添加出错，请重试');
+                $this->error('Add error, please try again');
             }
         }
         //获取教室
@@ -131,18 +131,18 @@ class Teacher extends Base
         $param = input('');
         $id = isset($param['id'])?(int)$param['id']:0;
         if($id == 0){
-            $this->error('请勿非法访问');
+            $this->error('Do not access illegally');
         }
         //获取老师信息
         $teacher_info = $this->teacher_model->get_one_data(['id'=>$id]);
         if (request()->post()) {
             $rule = [
-                ['identifier', 'require', '编号不能为空'],
-                ['username', 'require', '老师不能为空'],
-                ['classroom_id', 'require', '教室不能为空'],
-                ['curriculum', 'require', '学科不能为空'],
-                ['team', 'require', '团体课不能为空'],
-                ['status', 'require', '状态不能为空'],
+                ['identifier', 'require', 'Number cannot be empty'],
+                ['username', 'require', 'Teacher cannot be empty'],
+                ['classroom_id', 'require', 'Classroom cannot be empty'],
+                ['curriculum', 'require', 'Subject cannot be empty'],
+                ['team', 'require', 'Group class cannot be empty'],
+                ['status', 'require', 'Status cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -173,11 +173,11 @@ class Teacher extends Base
             if ($teacher_edit && $classroom_new && $classroom_old) {
                 //提交
                 $this->teacher_model->commit();
-                $this->success('修改成功');
+                $this->success('Successfully modified');
             } else {
                 //回滚
                 $this->teacher_model->rollback();
-                $this->error('修改出错，请重试');
+                $this->error('Edit error, please try again');
             }
         }
         $teacher_info['curriculum'] = explode(',',$teacher_info['curriculum']);

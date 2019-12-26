@@ -103,9 +103,9 @@ class Student extends Base
         $student_id = "c".str_pad(($student_id+1),5,"0",STR_PAD_LEFT );
         if (request()->post()) {
             $rule = [
-                ['name', 'require', '姓名不能为空'],
-                ['phone', 'require', '联系电话不能为空'],
-                ['curriculum_id', 'require', '学科不能为空'],
+                ['name', 'require', 'Name cannot be empty'],
+                ['phone', 'require', 'contact number can not be blank'],
+                ['curriculum_id', 'require', 'Subject cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -154,11 +154,11 @@ class Student extends Base
             if ($student_add && $dorm_log_add) {
                 //提交
                 $this->teacher_model->commit();
-                $this->success('添加成功');
+                $this->success('Added successfully');
             } else {
                 //回滚
                 $this->teacher_model->rollback();
-                $this->error('添加出错，请重试');
+                $this->error('Add error, please try again');
             }
         }
         //获取学科
@@ -177,13 +177,13 @@ class Student extends Base
         $param = input('');
         $id = isset($param['id'])?(int)$param['id']:0;
         if($id == 0){
-            $this->error('请勿非法访问');
+            $this->error('Do not access illegally');
         }
         if (request()->post()) {
             $rule = [
-                ['name', 'require', '姓名不能为空'],
-                ['phone', 'require', '联系电话不能为空'],
-                ['curriculum_id', 'require', '学科不能为空'],
+                ['name', 'require', 'Name cannot be empty'],
+                ['phone', 'require', 'contact number can not be blank'],
+                ['curriculum_id', 'require', 'Subject cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -235,11 +235,11 @@ class Student extends Base
             if ($student_edit && $dorm_log_edit) {
                 //提交
                 $this->teacher_model->commit();
-                $this->success('修改成功');
+                $this->success('Successfully modified');
             } else {
                 //回滚
                 $this->teacher_model->rollback();
-                $this->error('修改出错，请重试');
+                $this->error('Edit error, please try again');
             }
         }
         //获取学生信息
@@ -270,12 +270,12 @@ class Student extends Base
         $end = isset($param['end'])?$param['end']:'';
         $sex = isset($param['sex'])?$param['sex']:'';
         if(empty($start) || empty($end) || empty($sex)){
-            $this->error('请完整时间,性别！');
+            $this->error('Please complete time, gender');
         }
         //查询出所有寝室床位
         $dorm = $this->dorm_model->get_all_data(['status' => 1,'type' => $sex],'','id');
         if(empty($dorm)){
-            $this->error('无床位！');
+            $this->error('No bed');
         }
         foreach ($dorm as $k=>$v)
         {
@@ -285,10 +285,10 @@ class Student extends Base
         //寝室id
         $dorm_id = array_search('2',$student_dorm);
         if(empty($dorm_id)){
-            $this->error('无床位！');
+            $this->error('No bed');
         }
         $dorm = $this->dorm_model->get_one_data(['id'=>$dorm_id]);
-        $this->success('有床位','',$dorm);
+        $this->success('With bed','',$dorm);
     }
 
     /**
@@ -300,7 +300,7 @@ class Student extends Base
         $param = input('');
         $id = isset($param['id'])?(int)$param['id']:0;
         if($id == 0){
-            $this->error('请勿非法访问');
+            $this->error('Do not access illegally');
         }
         //查询课表信息
         $course_info = $this->course_model->get_all_data(['student_id' => $id],'id asc','id,curriculum_id,teacher_id,textbook_id',['teacher','classroom']);
@@ -529,9 +529,9 @@ class Student extends Base
         $param = input('');
         if (request()->post()) {
             $rule = [
-                ['curriculum', 'require', '课程不能为空'],
-                ['teacher', 'require', '老师不能为空'],
-                ['textbook', 'require', '课本不能为空'],
+                ['curriculum', 'require', 'Course cannot be empty'],
+                ['teacher', 'require', 'Teacher cannot be empty'],
+                ['textbook', 'require', 'Textbook cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -557,9 +557,9 @@ class Student extends Base
             //新增数据
             $ret = $this->course_model->saveAll($sqlmap);
             if ($ret) {
-                $this->success('编辑成功');
+                $this->success('Edited successfully');
             } else {
-                $this->error('编辑出错，请重试');
+                $this->error('Edit error, please try again');
             }
         }
     }
@@ -572,9 +572,9 @@ class Student extends Base
         $param = input('');
         if (request()->post()) {
             $rule = [
-                ['curriculum', 'require', '课程不能为空'],
-                ['teacher', 'require', '老师不能为空'],
-                ['textbook', 'require', '课本不能为空'],
+                ['curriculum', 'require', 'Course cannot be empty'],
+                ['teacher', 'require', 'Teacher cannot be empty'],
+                ['textbook', 'require', 'Textbook cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -593,9 +593,9 @@ class Student extends Base
             //修改数据
             $ret = $this->course_model->isUpdate()->saveAll($sqlmap);
             if ($ret) {
-                $this->success('编辑成功');
+                $this->success('Edited successfully');
             } else {
-                $this->error('编辑出错，请重试');
+                $this->error('Edit error, please try again');
             }
         }
     }
@@ -692,9 +692,9 @@ class Student extends Base
         //新增数据
         $ret = $this->course_model->saveAll($rows);
         if ($ret) {
-            $this->success('自动排课成功');
+            $this->success('Automatic class schedule succeeded');
         } else {
-            $this->error('自动排课失败，请重试');
+            $this->error('Auto-schedule failed, please try again');
         }
     }
 

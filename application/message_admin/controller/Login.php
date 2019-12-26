@@ -48,31 +48,31 @@ class Login extends Controller
             $vercode = isset($param['vercode']) ? $param['vercode'] : '';
             //判断数据
             if (!$username) {
-                $this->error('请输入用户名');
+                $this->error('please enter user name');
             }
             if (!$password) {
-                $this->error('请输入登录密码');
+                $this->error('Please enter your password');
             }
             if (!$vercode) {
-                $this->error('请输入验证码');
+                $this->error('please enter verification code');
             }
 
             if (!captcha_check($vercode)) {
-                $this->error('验证码错误');
+                $this->error('Verification code error');
             };
             //获取管理员详细信息
             $admin_info = $this->admin_model->get_one_data(['username' => $username]);
             if (!$admin_info) {
-                $this->error('该用户不存在');
+                $this->error('this user does not exist');
             }
             //验证密码
             $user_password = md5(md5($password) . $admin_info['code']);
             if ($user_password != $admin_info['password']) {
-                $this->error('登录密码错误');
+                $this->error('Incorrect login password');
             }
             //验证是否被禁止
             if ($admin_info['status'] == 2) {
-                $this->error('该账户已被禁止登录');
+                $this->error('This account has been banned');
             }
             if($admin_info['type'] == 2){
                 //总计
@@ -89,7 +89,7 @@ class Login extends Controller
 
             //写入管理员操作记录
             set_admin_log($admin_info['id'], '管理员[ID:' . $admin_info['id'] . ']登录平台');
-            $this->success('登录成功');
+            $this->success('login successful');
         }
     }
 }

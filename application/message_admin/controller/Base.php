@@ -35,7 +35,7 @@ class Base extends Controller
         //判断登录
         if (empty(session('username')) || empty(session('password'))) {
             $loginUrl = url('login/index');
-            $this->error('请登录', $loginUrl);
+            $this->error('please sign in', $loginUrl);
         }
         $username = session('username');
         $password = session('password');
@@ -43,7 +43,7 @@ class Base extends Controller
         $is_admin = $this->admin_model->get_all_count(['username' => $username, 'password' => $password]);
         if (!$is_admin) {
             $loginUrl = url('login/index');
-            $this->error('请登录', $loginUrl);
+            $this->error('please sign in', $loginUrl);
         }
     }
 
