@@ -115,6 +115,7 @@ class Dormchart extends Base
             $sqlmap['dorm_id'] = $param['dorm_id'];
             $sqlmap['inputtime'] = strtotime($param['inputtime']);
             $sqlmap['leavetime'] = strtotime($param['leavetime']);
+            $sqlmap['type'] = 2;
             //新增数据
             $ret = $this->dorm_log_model->add_data($sqlmap);
             if ($ret) {
