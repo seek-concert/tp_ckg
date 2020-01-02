@@ -62,7 +62,7 @@
                     <i class="layui-icon layui-icon-add-1"></i>AddStudent
                 </button>
                 <button class="layui-btn layui-btn-sm" onclick="dorm()" data-type="add">
-                    BedInquiry
+                    RoomInquiry
                 </button>
             </div>
             <table id="student_lists" lay-filter="test"></table>
@@ -76,6 +76,7 @@
 
 <script src="__STATIC__/admin/layui/layui.js"></script>
 <script src="__STATIC__/jquery-3.2.1.min.js"></script>
+<script src="__STATIC__/DataTableExtend.js"></script>
 <script>
     layui.config({
         base: '__STATIC__/admin/' //静态资源所在路径
@@ -225,6 +226,11 @@
                         minWidth: 100,
                     },
                     {
+                        field: 'course',
+                        title: 'course',
+                        hide:true,
+                    },
+                    {
                         title: 'operating',
                         // fixed:'right',
                         align: 'center',
@@ -234,7 +240,20 @@
 
                 ]
             ],
+            done: function (res, curr, count) {
+                // 表格渲染完成之后的回调
+                LayUIDataTable.SetJqueryObj($);// 第一步：设置jQuery对象
+                // LayUIDataTable.HideField('course');// 隐藏列-单列模式
+                var currentRowDataList = LayUIDataTable.ParseDataTable(function (index, currentData, rowData) {
+                })
 
+                // 对相关数据进行判断处理
+                $.each(currentRowDataList, function (index, obj) {
+                    if (obj['d_name'].value == ''||obj['course'].value == 0) {
+                        obj['d_name'].row.css("color", "#FF0000");
+                    }
+                })
+            }
         });
 
         //监听搜索
@@ -280,11 +299,11 @@
             }
         });
 
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#arrival' //指定元素
+        //日期范围
+        var Date = laydate.render({
+            elem: '#arrival'
+            , range: true
         });
-
     });
 
     //添加

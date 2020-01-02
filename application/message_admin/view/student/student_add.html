@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">Sex</label>
+                        <label class="layui-form-label">Sex<i style="color: red">*</i></label>
                         <div class="layui-input-block">
                             <select name="sex" id="sex" class="layui-input">
                                 <option value="1" selected>male</option>
@@ -72,15 +72,15 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">Age</label>
+                        <label class="layui-form-label">Age<i style="color: red">*</i></label>
                         <div class="layui-input-block">
-                            <input type="text" name="age" value=""
+                            <input type="text" name="age" required lay-verify="required" value=""
                                    placeholder="Please enter age" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">Nationality</label>
+                        <label class="layui-form-label">Nationality<i style="color: red">*</i></label>
                         <div class="layui-input-block">
                             <select name="nationality"  class="layui-input">
                                 <option value="china" selected>china</option>
@@ -138,43 +138,43 @@
                         </div>
                     </div>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">ClassMode</label>
-                        <div class="layui-input-block">
-                            <select name="school"  class="layui-input">
-                                <option value="1">One-to-one</option>
-                                <option value="2">Group lesson</option>
-                            </select>
-                        </div>
-                    </div>
+                    <!--<div class="layui-form-item">-->
+                        <!--<label class="layui-form-label">ClassMode</label>-->
+                        <!--<div class="layui-input-block">-->
+                            <!--<select name="school"  class="layui-input">-->
+                                <!--<option value="1">One-to-one</option>-->
+                                <!--<option value="2">Group class</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">ArrivalDate</label>
+                        <label class="layui-form-label">ArrivalDate<i style="color: red">*</i></label>
                         <div class="layui-input-block">
-                            <input type="text" class="layui-input" name="arrival"
+                            <input type="text" class="layui-input" required lay-verify="required" name="arrival"
                                    id="test-laydate-start" placeholder="ArrivalDate">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">LeaveDate</label>
+                        <label class="layui-form-label">LeaveDate<i style="color: red">*</i></label>
                         <div class="layui-input-block">
-                            <input type="text" class="layui-input" name="leave"
+                            <input type="text" class="layui-input" required lay-verify="required" name="leave"
                                    id="test-laydate-end" placeholder="LeaveDate">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">RoomNumber</label>
+                        <label class="layui-form-label">RoomNumber<i style="color: red">*</i></label>
                         <div class="layui-input-block">
-                            <input type="hidden" id="dorm_id" name="dorm_id" value="">
-                            <input type="text" id="dorm_name" value=""
-                                   placeholder="Please select arrival and leave dates" readonly="readonly" autocomplete="off" class="layui-input">
+                            <select name="dorm_id" id="dorm_id" class="layui-input" lay-filter="dorm_id">
+                                <option value="">please choose</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">RoomType</label>
+                        <label class="layui-form-label">RoomType<i style="color: red">*</i></label>
                         <div class="layui-input-block">
                             <input type="text" id="dorm_type" value=""
                                    placeholder="Please select arrival and leave dates" readonly="readonly" autocomplete="off" class="layui-input">
@@ -284,12 +284,15 @@
                         dataType: "json",
                         success: function (data) {
                             if(data.code == 1){
-                                $("#dorm_id").val(data.data.id);
-                                $("#dorm_name").val(data.data.username);
-                                $("#dorm_type").val(data.data.type);
+                                var html='';
+                                $.each(data.data, function (k, v) {
+                                    html += '<option data-test="'+v.type+'" value="' + v.id + '">' + v.username + '</option>';
+                                })
+                                $("#dorm_id").append(html);
+                                form.render('select');
                             }else{
-                                $("#dorm_id").val('');
-                                $("#dorm_name").val('');
+                                var html= '<option value="">please choose</option>';
+                                $("#dorm_id").html(html);
                                 $("#dorm_type").val('');
                                 layer.alert(data.msg);
                             }
@@ -300,6 +303,12 @@
                 }
             }
         });
+
+        //监听寝室选择
+        form.on('select(dorm_id)', function(data){
+            var type = data.elem[data.elem.selectedIndex].dataset.test;
+            $("#dorm_type").val(type);
+        })
     })
     function qx() {
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

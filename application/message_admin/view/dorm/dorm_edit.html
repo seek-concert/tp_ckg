@@ -28,11 +28,23 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">Sex<i style="color: red">*</i></label>
+                        <label class="layui-form-label">Type<i style="color: red">*</i></label>
                         <div class="layui-input-block">
                             <select name="type" class="layui-input">
-                                <option value="1" {if $dorm_info['type']== 'Male'}selected{/if}>Male</option>
-                                <option value="2" {if $dorm_info['type']== 'Female'}selected{/if}>Female</option>
+                                <option value="1" {if $dorm_info['type']== 'Single'}selected{/if}>Single</option>
+                                <option value="2" {if $dorm_info['type']== 'Double'}selected{/if}>Double</option>
+                                <option value="3" {if $dorm_info['type']== 'Triple'}selected{/if}>Triple</option>
+                                <option value="4" {if $dorm_info['type']== 'Quadruple'}selected{/if}>Quadruple</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">Sex<i style="color: red">*</i></label>
+                        <div class="layui-input-block">
+                            <select name="sex" class="layui-input">
+                                <option value="1" {if $dorm_info['sex']== 'Male'}selected{/if}>Male</option>
+                                <option value="2" {if $dorm_info['sex']== 'Female'}selected{/if}>Female</option>
                             </select>
                         </div>
                     </div>

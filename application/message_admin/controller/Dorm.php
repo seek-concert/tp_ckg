@@ -42,7 +42,7 @@ class Dorm extends Base
         //条件组装
         $sqlmap = [];
         //列表信息
-        $lists = $this->dorm_model->get_all_data_page($sqlmap, $page, $limit, 'id desc', 'id,username,type,status,input_time');
+        $lists = $this->dorm_model->get_all_data_page($sqlmap, $page, $limit, 'id desc', 'id,username,type,sex,status,input_time');
         $return_data = [];
         $return_data['code'] = 1;
         $return_data['count'] = $this->dorm_model->get_all_count($sqlmap);
@@ -60,7 +60,8 @@ class Dorm extends Base
         if (request()->post()) {
             $rule = [
                 ['username', 'require', 'Bed cannot be empty'],
-                ['type', 'require', 'Sex cannot be empty'],
+                ['sex', 'require', 'Sex cannot be empty'],
+                ['type', 'require', 'Type cannot be empty'],
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -71,6 +72,7 @@ class Dorm extends Base
             //组装数据
             $sqlmap = [];
             $sqlmap['username'] = $param['username'];
+            $sqlmap['sex'] = $param['sex'];
             $sqlmap['type'] = $param['type'];
             //新增数据
             $ret = $this->dorm_model->add_data($sqlmap);

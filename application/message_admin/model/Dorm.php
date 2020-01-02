@@ -31,9 +31,16 @@ class Dorm extends Base
     }
 
     //获取器--获取数据的字段值后自动转换为字符串描述
-    public function getTypeAttr($value)
+    public function getSexAttr($value)
     {
         $status = ['' => '', 1 => 'Male', 2 => 'Female'];
+        return $status[$value];
+    }
+
+    //获取器--获取数据的字段值后自动转换为字符串描述
+    public function getTypeAttr($value)
+    {
+        $status = ['' => '', 1 => 'Single', 2 => 'Double', 3 => 'Triple', 4 => 'Quadruple'];
         return $status[$value];
     }
 

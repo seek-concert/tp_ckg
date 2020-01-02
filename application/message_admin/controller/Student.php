@@ -68,11 +68,10 @@ class Student extends Base
             $sqlmap['english'] = ['like', '%' . $english . '%'];
         }
         if (!empty($arrival)) {
-            $sqlmap['arrival'] = ['eq',$arrival];
+            $arrival = explode(' ',$arrival);
+            $sqlmap['arrival'] = ['between time',[$arrival[0],$arrival[2]]];
         }
         if (!empty($status)) {
-
-
             $sqlmap['status'] = $status;
         }
         //是否为机构用户，机构用户自能查询自己添加的学生
@@ -84,6 +83,7 @@ class Student extends Base
         foreach ($lists as $k=>$v){
             $lists[$k]['arrival'] = $v['arrival']=='0000-00-00'?'':$v['arrival'];
             $lists[$k]['leave'] = $v['leave']=='0000-00-00'?'':$v['leave'];
+            $lists[$k]['course'] = $this->course_model->get_all_count(['student_id'=>$v['id']]);
         }
         $return_data = [];
         $return_data['code'] = 1;
@@ -104,8 +104,14 @@ class Student extends Base
         if (request()->post()) {
             $rule = [
                 ['name', 'require', 'Name cannot be empty'],
-                ['phone', 'require', 'contact number can not be blank'],
+                ['phone', 'require', 'ContactNumber can not be blank'],
+                ['sex', 'require', 'Sex can not be blank'],
+                ['age', 'require', 'Age can not be blank'],
+                ['nationality', 'require', 'Nationality can not be blank'],
                 ['curriculum_id', 'require', 'Subject cannot be empty'],
+                ['arrival', 'require', 'ArrivalDate cannot be empty'],
+                ['leave', 'require', 'LeaveDate cannot be empty'],
+                ['dorm_id', 'require', 'RoomNumber cannot be empty']
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -182,8 +188,14 @@ class Student extends Base
         if (request()->post()) {
             $rule = [
                 ['name', 'require', 'Name cannot be empty'],
-                ['phone', 'require', 'contact number can not be blank'],
+                ['phone', 'require', 'ContactNumber can not be blank'],
+                ['sex', 'require', 'Sex can not be blank'],
+                ['age', 'require', 'Age can not be blank'],
+                ['nationality', 'require', 'Nationality can not be blank'],
                 ['curriculum_id', 'require', 'Subject cannot be empty'],
+                ['arrival', 'require', 'ArrivalDate cannot be empty'],
+                ['leave', 'require', 'LeaveDate cannot be empty'],
+                ['dorm_id', 'require', 'RoomNumber cannot be empty']
             ];
             //验证数据
             $result = $this->validate($param, $rule);
@@ -273,21 +285,22 @@ class Student extends Base
             $this->error('Please complete time, gender');
         }
         //查询出所有寝室床位
-        $dorm = $this->dorm_model->get_all_data(['status' => 1,'type' => $sex],'','id');
+        $dorm = $this->dorm_model->get_all_data(['status' => 1,'sex' => $sex],'','id');
         if(empty($dorm)){
             $this->error('No bed');
         }
         foreach ($dorm as $k=>$v)
         {
             //查询寝室床位对应学生
-            $student_dorm[$v['id']] = $this->dorm_log_model->get_all_data(['dorm_id' =>$v['id'],'leavetime' =>['>',$start]],'','id')?1:2;
+            $student_dorm[] = $this->dorm_log_model->get_all_data(['dorm_id' =>$v['id'],'leavetime' =>['>',$start]],'','id')?'':$v['id'];
         }
         //寝室id
-        $dorm_id = array_search('2',$student_dorm);
+        $dorm_id = implode(',',array_merge(array_filter($student_dorm)));
+//        $dorm_id = array_search('2',$student_dorm);
         if(empty($dorm_id)){
             $this->error('No bed');
         }
-        $dorm = $this->dorm_model->get_one_data(['id'=>$dorm_id]);
+        $dorm = $this->dorm_model->get_all_data(['id'=>['in',$dorm_id]],'','id,username,type');
         $this->success('With bed','',$dorm);
     }
 
