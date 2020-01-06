@@ -10,6 +10,8 @@
 // [ 学生管理 ]
 namespace app\message_admin\controller;
 
+use app\common\service\Office;
+
 class Student extends Base
 {
 
@@ -25,6 +27,8 @@ class Student extends Base
     protected $teacher_model;
     //住宿记录
     protected $dorm_log_model;
+    //机构模型
+    protected $admin_model;
 
     public function __construct()
     {
@@ -35,6 +39,7 @@ class Student extends Base
         $this->course_model = model('Course');
         $this->teacher_model = model('Teacher');
         $this->dorm_log_model = model('DormLog');
+        $this->admin_model = model('Admin');
     }
 
     /**
@@ -99,7 +104,7 @@ class Student extends Base
     {
         $param = input('');
         //生成学号
-        $student_id = $this->student_model->get_one_value('','id','id desc');
+        $student_id = $this->student_model->get_one_value('','id','id desc')?:0;
         $student_id = "c".str_pad(($student_id+1),5,"0",STR_PAD_LEFT );
         if (request()->post()) {
             $rule = [
@@ -258,9 +263,31 @@ class Student extends Base
         $student_info = $this->student_model->get_one_data(['id'=>$id], 'id desc', 'id,student_id,name,status,phone,english,sex,age,nationality,passport,address,arrival,flight,curriculum_id,days,dorm_id,mechanism_id,school,pay,leave,remarks,admin_id', ['admins','dorm']);
         //获取学科
         $curriculum_info = $this->curriculum_model->get_all_data(['level' => 0], '', 'id,username')?:[];
+        //获取可用寝室
+        //查询出所有寝室床位
+        $sex = $student_info['sex']=="male"?1:2;
+        $start = strtotime($student_info['arrival']);
+        $dorm = $this->dorm_model->get_all_data(['status' => 1,'sex' => $sex],'','id');
+        if(!empty($dorm)){
+            foreach ($dorm as $k=>$v)
+            {
+                //查询寝室床位对应学生
+                $student_dorm[] = $this->dorm_log_model->get_all_data(['dorm_id' =>$v['id'],'leavetime' =>['>',$start]],'','id')?'':$v['id'];
+            }
+            //寝室id
+            $dorm_id = implode(',',array_merge(array_filter($student_dorm)));
+            if(!empty($dorm_id)){
+                $dorm = $this->dorm_model->get_all_data(['id'=>['in',$dorm_id]],'','id,username,type');
+            }else{
+                $dorm = [];
+            }
+        }else{
+            $dorm = [];
+        }
         $return_data = [];
         $return_data['curriculum_info'] = $curriculum_info;
         $return_data['student_info'] = $student_info;
+        $return_data['dorm_info'] = $dorm;
         return view('',$return_data);
     }
 
@@ -711,4 +738,70 @@ class Student extends Base
         }
     }
 
+    /**
+     * 学生导入
+     */
+    public function import()
+    {
+        if (request()->isAjax()) {
+            $file = request()->file('file');
+            $file_info = $file->getInfo();
+            $type = $file_info['type'];
+            if($type == 'application/vnd.ms-excel' || $type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+                $name = explode(".",$file_info['name']);
+                if($name['0'] == '学生信息' && ($name[1] == 'xlsx' || $name[1] == 'xls')){
+                    // 移动到框架应用根目录/public/uploads/ 目录下
+                    $info = $file->move(ROOT_PATH . 'public' . DS . 'upload');
+                    if ($info) {
+                        $src = 'upload' . '/' . date('Ymd') . '/' . $info->getFilename();
+                        $excel = new Office();
+                        //读取EXCEL表数据
+                        $row = $excel->importExecl($src);
+                        //清楚第一行
+                        unset($row[1]);
+                        //组装为自己的数据
+                        foreach ($row as $k=>$v){
+                            $data[$k]['name'] = $v['A'];
+                            $data[$k]['english'] = $v['B'];
+                            $data[$k]['arrival'] = gmdate('Y-m-d', ($v['C'] - 25569) * 86400);
+                            $data[$k]['leave'] = gmdate('Y-m-d', ($v['D'] - 25569) * 86400);
+                            $data[$k]['age'] = $v['E'];
+                            $data[$k]['sex'] = $v['F'];
+                            $data[$k]['days'] = $v['G'];
+                            $data[$k]['passport'] = $v['H'];
+                            $data[$k]['curriculum_id'] = $v['I'];
+                            $data[$k]['phone'] = $v['J'];
+                            $data[$k]['address'] = $v['K'];
+                            $data[$k]['flight'] = $v['L'];
+                            $data[$k]['mechanism_id'] = $v['M'];
+                            $data[$k]['remarks'] = $v['N'];
+                            $data[$k]['admin_id'] = session('id');
+                        }
+                        //生成学号
+                        $student_id = $this->student_model->get_one_value('','id','id desc')?:0;
+                        foreach ($data as $k=>$v){
+                            $i = $k-1;
+                            $data[$k]['student_id'] = "c".str_pad(($student_id+$i),5,"0",STR_PAD_LEFT );
+                            $data[$k]['sex'] = $v['sex']=='male'?1:2;
+                            $data[$k]['curriculum_id'] = $this->curriculum_model->get_one_value(['username' => $v['curriculum_id']],'id')?:'';
+                            $data[$k]['mechanism_id'] = $this->admin_model->get_one_value(['username' => $v['mechanism_id']],'id')?:'';
+                        }
+                        $import_student = $this->student_model->saveAll($data);
+                        if($import_student){
+                            $this->success('Import succeeded');
+                        }else{
+                            $this->error('Import failed, please try again');
+                        }
+                    } else {
+                        // 上传失败获取错误信息
+                        $this->error('Import failed, please try again');
+                    }
+                }else{
+                    $this->error('Import failed, please try again');
+                }
+            }else{
+                $this->error('Import failed, please try again');
+            }
+        }
+    }
 }

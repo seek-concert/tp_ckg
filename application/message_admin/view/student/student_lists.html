@@ -51,6 +51,9 @@
                     <button class="layui-btn layuiadmin-btn-admin" lay-submit lay-filter="LAY-user-back-search">
                         <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>Inquire
                     </button>
+                    <button class="layui-btn layuiadmin-btn-admin" id="Import">
+                        ImportStudent
+                    </button>
                 </div>
             </div>
         </div>
@@ -84,10 +87,11 @@
         index: 'lib/index' //主入口模块
     });
 
-    layui.use(['table', 'laydate'], function () {
+    layui.use(['table', 'laydate','upload'], function () {
         var table = layui.table;
         var form = layui.form;
         var laydate = layui.laydate;
+        var upload = layui.upload;
         //第一个实例
         table.render({
             elem: '#student_lists',
@@ -303,6 +307,21 @@
         var Date = laydate.render({
             elem: '#arrival'
             , range: true
+        });
+
+        //文件上传--学生导入
+        var uploadInst = upload.render({
+            elem: '#Import' //绑定元素
+            , url: '{:url("student/import")}' //上传接口
+            , accept: 'file'
+            , exts: 'xlsx|xls'
+            , done: function (ret) {
+                layer.alert(ret.msg)
+                layui.table.reload('student_lists'); //重载表格
+            }
+            , error: function () {
+                layer.alert('上传出错')
+            }
         });
     });
 
