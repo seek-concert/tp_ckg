@@ -267,8 +267,8 @@ class Student extends Base
         $sex = $student_info['sex']=="male"?1:2;
         $dorm_type = $this->dorm_type($sex);
         //获取寝室
-        $start = strtotime($student_info['arrival']);
-        $end = strtotime($student_info['leave']);
+        $start = $student_info['arrival'];
+        $end = $student_info['leave'];
         switch ($student_info['d_type']){
             case 'Single':
                 $type = 1;
@@ -314,7 +314,7 @@ class Student extends Base
     public function student_dorm($start = '',$end = '',$sex = '',$type = '')
     {
 //        $param = input('');
-//        $start = isset($param['start'])?strtotime($param['start']):'';
+        $start = isset($start)?strtotime($start):'';
 //        $end = isset($param['end'])?$param['end']:'';
 //        $sex = isset($param['sex'])?$param['sex']:'';
 //        $type = isset($param['type'])?$param['type']:'';
