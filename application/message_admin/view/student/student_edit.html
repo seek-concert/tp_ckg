@@ -64,7 +64,8 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">Sex<i style="color: red">*</i></label>
                         <div class="layui-input-block">
-                            <select name="sex" id="sex" class="layui-input">
+                            <select name="sex" id="sex" class="layui-input" lay-filter="sex">
+                                <option value="">please choose</option>
                                 <option value="1" {if $student_info['sex'] == 'male'}selected{/if}>male</option>
                                 <option value="2" {if $student_info['sex'] == 'female'}selected{/if}>female</option>
                             </select>
@@ -165,28 +166,32 @@
                     </div>
 
                     <div class="layui-form-item">
+                        <label class="layui-form-label">RoomType<i style="color: red">*</i></label>
+                        <div class="layui-input-block">
+                            <select id="dorm_type" class="layui-input" lay-filter="dorm_type">
+                                <option value="">please choose</option>
+                                {foreach $dorm_type as $k=>$v}
+                                <option value="{$v.type_name}" {if $student_info['d_type'] == $v['type']}selected{/if}>{$v.type}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
                         <label class="layui-form-label">RoomNumber<i style="color: red">*</i></label>
                         <div class="layui-input-block">
                             {if $student_info['dorm_id'] != 0}
                             <select name="dorm_id" id="dorm_id" class="layui-input" lay-filter="dorm_id">
                                 <option value="{$student_info['dorm_id']}">{$student_info['d_name']}</option>
+                                {foreach $dorm_info as $k=>$v}
+                                <option value="{$v['id']}">{$v['username']}</option>
+                                {/foreach}
                             </select>
                             {else/}
                             <select name="dorm_id" id="dorm_id" class="layui-input" lay-filter="dorm_id">
                                 <option value="">please choose</option>
-                                {foreach $dorm_info as $k=>$v}
-                                    <option data-test="{$v['type']}" value="{$v['id']}">{$v['username']}</option>
-                                {/foreach}
                             </select>
                             {/if}
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">RoomType<i style="color: red">*</i></label>
-                        <div class="layui-input-block">
-                            <input type="text" id="dorm_type" value="{$student_info['d_type']}"
-                                   placeholder="Please select arrival and leave dates" readonly="readonly" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
@@ -281,43 +286,63 @@
                 insStart.config.max = lay.extend({}, date, {
                     month: date.month - 1
                 });
-                var start = $("#test-laydate-start").val();
-                var end = $("#test-laydate-end").val();
-                var sex = $("#sex option:selected").val();
-                if(start != '' && end != '' && sex != ''){
-                    $.ajax({
-                        url: "{:url('student_dorm')}",
-                        async: false,//这一步是非常重要的，作用是设置为同步执行
-                        type: "POST",
-                        data: {"start":start,"end":end,"sex":sex},
-                        dataType: "json",
-                        success: function (data) {
-                            if(data.code == 1){
-                                var html='<option value="">please choose</option>';
-                                $("#dorm_type").val('');
-                                $.each(data.data, function (k, v) {
-                                    html += '<option data-test="'+v.type+'" value="' + v.id + '">' + v.username + '</option>';
-                                })
-                                $("#dorm_id").html(html);
-                                form.render('select');
-                            }else{
-                                var html= '<option value="">please choose</option>';
-                                $("#dorm_id").html(html);
-                                $("#dorm_type").val('');
-                                layer.alert(data.msg);
-                            }
-                        }
-                    });
-                }else{
-                    layer.alert("Please complete time, sex!");
-                }
             }
         });
 
-        //监听寝室选择
-        form.on('select(dorm_id)', function(data){
-            var type = data.elem[data.elem.selectedIndex].dataset.test;
-            $("#dorm_type").val(type);
+        //监听性别选择
+        form.on('select(sex)', function(data){
+            var sex = data.value;
+            $.ajax({
+                url: "{:url('dorm_type')}",
+                async: false,//这一步是非常重要的，作用是设置为同步执行
+                type: "POST",
+                data: {"sex":sex},
+                dataType: "json",
+                success: function (data) {
+                    $("#dorm_type").html('<option value="">please choose</option>');
+                    $("#dorm_id").html('<option value="">please choose</option>');
+                    var html='';
+                    $.each(data, function (k, v) {
+                        html += '<option value="' + v.type_name + '">' + v.type + '</option>';
+                    })
+                    $("#dorm_type").append(html);
+                    form.render('select');
+                }
+            });
+        })
+
+        //监听寝室类型选择
+        form.on('select(dorm_type)', function(data){
+            var start = $("#test-laydate-start").val();
+            var end = $("#test-laydate-end").val();
+            var sex = $("#sex option:selected").val();
+            var type = data.value;
+            if(start != '' && end != '' && sex != '' && type != ''){
+                $.ajax({
+                    url: "{:url('student_dorm')}",
+                    async: false,//这一步是非常重要的，作用是设置为同步执行
+                    type: "POST",
+                    data: {"start":start,"end":end,"sex":sex,'type':type},
+                    dataType: "json",
+                    success: function (data) {
+                        if(data.code == 1){
+                            var html='<option value="">please choose</option>';
+                            $.each(data.data, function (k, v) {
+                                html += '<option value="' + v.id + '">' + v.username + '</option>';
+                            })
+                            $("#dorm_id").html(html);
+                            form.render('select');
+                        }else{
+                            var html='<option value="">please choose</option>';
+                            $("#dorm_id").html(html);
+                            form.render('select');
+                            layer.alert(data.msg);
+                        }
+                    }
+                });
+            }else{
+                layer.alert("Please complete Time, Sex, RoomType!");
+            }
         })
     })
     function qx() {

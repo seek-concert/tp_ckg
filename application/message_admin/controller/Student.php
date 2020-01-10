@@ -263,31 +263,39 @@ class Student extends Base
         $student_info = $this->student_model->get_one_data(['id'=>$id], 'id desc', 'id,student_id,name,status,phone,english,sex,age,nationality,passport,address,arrival,flight,curriculum_id,days,dorm_id,mechanism_id,school,pay,leave,remarks,admin_id', ['admins','dorm']);
         //获取学科
         $curriculum_info = $this->curriculum_model->get_all_data(['level' => 0], '', 'id,username')?:[];
-        //获取可用寝室
-        //查询出所有寝室床位
+        //获取寝室类型
         $sex = $student_info['sex']=="male"?1:2;
+        $dorm_type = $this->dorm_type($sex);
+        //获取寝室
         $start = strtotime($student_info['arrival']);
-        $dorm = $this->dorm_model->get_all_data(['status' => 1,'sex' => $sex],'','id');
-        if(!empty($dorm)){
-            foreach ($dorm as $k=>$v)
-            {
-                //查询寝室床位对应学生
-                $student_dorm[] = $this->dorm_log_model->get_all_data(['dorm_id' =>$v['id'],'leavetime' =>['>',$start]],'','id')?'':$v['id'];
-            }
-            //寝室id
-            $dorm_id = implode(',',array_merge(array_filter($student_dorm)));
-            if(!empty($dorm_id)){
-                $dorm = $this->dorm_model->get_all_data(['id'=>['in',$dorm_id]],'','id,username,type');
-            }else{
-                $dorm = [];
-            }
+        $end = strtotime($student_info['leave']);
+        switch ($student_info['d_type']){
+            case 'Single':
+                $type = 1;
+                break;
+            case 'Double':
+                $type = 2;
+                break;
+            case 'Triple':
+                $type = 3;
+                break;
+            case 'Quadruple':
+                $type = 4;
+                break;
+            default:
+                $type = '';
+        }
+        $dorm_info = $this->student_dorm($start,$end,$sex,$type);
+        if($dorm_info['code'] == 1){
+            $dorm_info = $dorm_info['data'];
         }else{
-            $dorm = [];
+            $dorm_info = [];
         }
         $return_data = [];
         $return_data['curriculum_info'] = $curriculum_info;
         $return_data['student_info'] = $student_info;
-        $return_data['dorm_info'] = $dorm;
+        $return_data['dorm_type'] = $dorm_type;
+        $return_data['dorm_info'] = $dorm_info;
         return view('',$return_data);
     }
 
@@ -299,22 +307,26 @@ class Student extends Base
     {
         return view();
     }
+
     /**
      * 获取寝室
      */
-    public function student_dorm()
+    public function student_dorm($start = '',$end = '',$sex = '',$type = '')
     {
-        $param = input('');
-        $start = isset($param['start'])?strtotime($param['start']):'';
-        $end = isset($param['end'])?$param['end']:'';
-        $sex = isset($param['sex'])?$param['sex']:'';
-        if(empty($start) || empty($end) || empty($sex)){
-            $this->error('Please complete time, gender');
+//        $param = input('');
+//        $start = isset($param['start'])?strtotime($param['start']):'';
+//        $end = isset($param['end'])?$param['end']:'';
+//        $sex = isset($param['sex'])?$param['sex']:'';
+//        $type = isset($param['type'])?$param['type']:'';
+        if(empty($start) || empty($end) || empty($sex) || empty($type)){
+//            $this->error('Please complete Time, Sex, RoomType!');
+            return ['code'=>0,'msg'=>'Please complete Time, Sex, RoomType!'];
         }
-        //查询出所有寝室床位
-        $dorm = $this->dorm_model->get_all_data(['status' => 1,'sex' => $sex],'','id');
+        //查询出所有对应类型性别的寝室床位
+        $dorm = $this->dorm_model->get_all_data(['status' => 1,'sex' => $sex,'type' => $type],'','id');
         if(empty($dorm)){
-            $this->error('No bed');
+//            $this->error('No bed');
+            return ['code'=>0,'msg'=>'No bed'];
         }
         foreach ($dorm as $k=>$v)
         {
@@ -325,10 +337,37 @@ class Student extends Base
         $dorm_id = implode(',',array_merge(array_filter($student_dorm)));
 //        $dorm_id = array_search('2',$student_dorm);
         if(empty($dorm_id)){
-            $this->error('No bed');
+            return ['code'=>0,'msg'=>'No bed'];
         }
         $dorm = $this->dorm_model->get_all_data(['id'=>['in',$dorm_id]],'','id,username,type');
-        $this->success('With bed','',$dorm);
+//        $this->success('With bed','',$dorm);
+        return ['code'=>1,'msg'=>'With bed','data'=>$dorm];
+    }
+
+    /**
+     * 获取寝室类型
+     */
+    public function dorm_type($sex = '')
+    {
+        $dorm_type = $this->dorm_model->Distinct(true)->field('type')->where(['sex'=>$sex])->select();
+        $dorm_type = objToArray($dorm_type);
+        foreach ($dorm_type as $k=>$v){
+            switch ($v['type']){
+                case 'Single':
+                    $dorm_type[$k]['type_name'] = 1;
+                    break;
+                case 'Double':
+                    $dorm_type[$k]['type_name'] = 2;
+                    break;
+                case 'Triple':
+                    $dorm_type[$k]['type_name'] = 3;
+                    break;
+                case 'Quadruple':
+                    $dorm_type[$k]['type_name'] = 4;
+                    break;
+            }
+        }
+        return $dorm_type;
     }
 
     /**

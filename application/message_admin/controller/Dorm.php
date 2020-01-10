@@ -59,7 +59,7 @@ class Dorm extends Base
 
         if (request()->post()) {
             $rule = [
-                ['username', 'require', 'Bed cannot be empty'],
+                ['username', 'require|unique:dorm', 'Bed cannot be empty|Bed repetition'],
                 ['sex', 'require', 'Sex cannot be empty'],
                 ['type', 'require', 'Type cannot be empty'],
             ];
@@ -97,7 +97,7 @@ class Dorm extends Base
         }
         if (request()->post()) {
             $rule = [
-                ['username', 'require', 'Bed cannot be empty'],
+                ['username', 'require|unique:dorm', 'Bed cannot be empty|Bed repetition'],
                 ['type', 'require', 'Sex cannot be empty'],
                 ['status', 'require', 'Status cannot be empty'],
             ];
