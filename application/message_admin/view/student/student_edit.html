@@ -27,115 +27,169 @@
                         </div>
                     </div>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">Name<i style="color: red">*</i></label>
-                        <div class="layui-input-block">
-                            <input type="text" name="name" required lay-verify="required" value="{$student_info['name']}"
-                                   placeholder="Please enter name" autocomplete="off" class="layui-input">
+                    <div class="layui-row layui-col-space10 layui-form-item">
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">Name<i style="color: red">*</i></label>
+                            <div class="layui-input-block">
+                                <input type="text" name="name" required lay-verify="required" value="{$student_info['name']}"
+                                       placeholder="Please enter name" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">AcademicStatus</label>
+                            <div class="layui-input-block">
+                                <select name="status"  class="layui-input">
+                                    <option value="1" {if $student_info['status'] == 'has not started'}selected{/if}>has not started</option>
+                                    <option value="1" {if $student_info['status'] == 'learning'}selected{/if}>learning</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">AcademicStatus</label>
-                        <div class="layui-input-block">
-                            <select name="status"  class="layui-input">
-                                <option value="1" {if $student_info['status'] == 'has not started'}selected{/if}>has not started</option>
-                                <option value="1" {if $student_info['status'] == 'learning'}selected{/if}>learning</option>
-                            </select>
+                    <div class="layui-row layui-col-space10 layui-form-item">
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">EnglishName</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="english" value="{$student_info['english']}"
+                                       placeholder="Please enter english name" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">ContactNumber<i style="color: red">*</i></label>
+                            <div class="layui-input-block">
+                                <input type="text" name="phone" required lay-verify="required" value="{$student_info['phone']}"
+                                       placeholder="Please enter contact number" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">EnglishName</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="english" value="{$student_info['english']}"
-                                   placeholder="Please enter english name" autocomplete="off" class="layui-input">
+                    <div class="layui-row layui-col-space10 layui-form-item">
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">Sex<i style="color: red">*</i></label>
+                            <div class="layui-input-block">
+                                <select name="sex" id="sex" class="layui-input" lay-filter="sex">
+                                    <option value="">please choose</option>
+                                    <option value="1" {if $student_info['sex'] == 'male'}selected{/if}>male</option>
+                                    <option value="2" {if $student_info['sex'] == 'female'}selected{/if}>female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">Age<i style="color: red">*</i></label>
+                            <div class="layui-input-block">
+                                <input type="text" name="age" required lay-verify="required" value="{$student_info['age']}"
+                                       placeholder="Please enter age" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">ContactNumber<i style="color: red">*</i></label>
-                        <div class="layui-input-block">
-                            <input type="text" name="phone" required lay-verify="required" value="{$student_info['phone']}"
-                                   placeholder="Please enter contact number" autocomplete="off" class="layui-input">
+                    <div class="layui-row layui-col-space10 layui-form-item">
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">Nationality<i style="color: red">*</i></label>
+                            <div class="layui-input-block">
+                                <select name="nationality"  class="layui-input">
+                                    <option value="china" {if $student_info['nationality'] == 'china'}selected{/if}>china</option>
+                                    <option value="taiwan" {if $student_info['nationality'] == 'taiwan'}selected{/if}>taiwan</option>
+                                    <option value="korean" {if $student_info['nationality'] == 'korean'}selected{/if}>korean</option>
+                                    <option value="japan" {if $student_info['nationality'] == 'japan'}selected{/if}>japan</option>
+                                    <option value="vietnam" {if $student_info['nationality'] == 'vietnam'}selected{/if}>vietnam</option>
+                                    <option value="russia" {if $student_info['nationality'] == 'russia'}selected{/if}>russia</option>
+                                    <option value="arab" {if $student_info['nationality'] == 'arab'}selected{/if}>arab</option>
+                                    <option value="mongolia" {if $student_info['nationality'] == 'mongolia'}selected{/if}>mongolia</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">PassportNumber</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="passport" value="{$student_info['passport']}"
+                                       placeholder="Please enter passport number" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">Sex<i style="color: red">*</i></label>
-                        <div class="layui-input-block">
-                            <select name="sex" id="sex" class="layui-input" lay-filter="sex">
-                                <option value="">please choose</option>
-                                <option value="1" {if $student_info['sex'] == 'male'}selected{/if}>male</option>
-                                <option value="2" {if $student_info['sex'] == 'female'}selected{/if}>female</option>
-                            </select>
+                    <div class="layui-row layui-col-space10 layui-form-item">
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">Address</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="address" value="{$student_info['address']}"
+                                       placeholder="Please enter address" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">ArrivalFlight</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="flight" value="{$student_info['flight']}"
+                                       placeholder="Please enter arrival flight" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">Age<i style="color: red">*</i></label>
-                        <div class="layui-input-block">
-                            <input type="text" name="age" required lay-verify="required" value="{$student_info['age']}"
-                                   placeholder="Please enter age" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">Nationality<i style="color: red">*</i></label>
-                        <div class="layui-input-block">
-                            <select name="nationality"  class="layui-input">
-                                <option value="china" {if $student_info['nationality'] == 'china'}selected{/if}>china</option>
-                                <option value="taiwan" {if $student_info['nationality'] == 'taiwan'}selected{/if}>taiwan</option>
-                                <option value="korean" {if $student_info['nationality'] == 'korean'}selected{/if}>korean</option>
-                                <option value="japan" {if $student_info['nationality'] == 'japan'}selected{/if}>japan</option>
-                                <option value="vietnam" {if $student_info['nationality'] == 'vietnam'}selected{/if}>vietnam</option>
-                                <option value="russia" {if $student_info['nationality'] == 'russia'}selected{/if}>russia</option>
-                                <option value="arab" {if $student_info['nationality'] == 'arab'}selected{/if}>arab</option>
-                                <option value="mongolia" {if $student_info['nationality'] == 'mongolia'}selected{/if}>mongolia</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">PassportNumber</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="passport" value="{$student_info['passport']}"
-                                   placeholder="Please enter passport number" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">Address</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="address" value="{$student_info['address']}"
-                                   placeholder="Please enter address" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">ArrivalFlight</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="flight" value="{$student_info['flight']}"
-                                   placeholder="Please enter arrival flight" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">Subject<i style="color: red">*</i></label>
-                        <div class="layui-input-block">
-                            <select name="curriculum_id"  class="layui-input">
-                                {foreach $curriculum_info as $k=>$v}
+                    <div class="layui-row layui-col-space10 layui-form-item">
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">Subject<i style="color: red">*</i></label>
+                            <div class="layui-input-block">
+                                <select name="curriculum_id"  class="layui-input">
+                                    {foreach $curriculum_info as $k=>$v}
                                     <option value="{$v.id}" {if $student_info['curriculum_id'] == $v['id']}selected{/if}>{$v.username}</option>
-                                {/foreach}
-                            </select>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">AcademicDays</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="days" value="{$student_info['days']}"
+                                       placeholder="Please enter the number of academic days" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">AcademicDays</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="days" value="{$student_info['days']}"
-                                   placeholder="Please enter the number of academic days" autocomplete="off" class="layui-input">
+                    <div class="layui-row layui-col-space10 layui-form-item">
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">ArrivalDate<i style="color: red">*</i></label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" required lay-verify="required" name="arrival" value="{$student_info['arrival']=='0000-00-00'?'':$student_info['arrival']}"
+                                       id="test-laydate-start" placeholder="ArrivalDate">
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">LeaveDate<i style="color: red">*</i></label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" required lay-verify="required" name="leave" value="{$student_info['leave']=='0000-00-00'?'':$student_info['leave']}"
+                                       id="test-laydate-end" placeholder="LeaveDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-row layui-col-space10 layui-form-item">
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">RoomType<i style="color: red">*</i></label>
+                            <div class="layui-input-block">
+                                <select id="dorm_type" class="layui-input" lay-filter="dorm_type">
+                                    <option value="">please choose</option>
+                                    {foreach $dorm_type as $k=>$v}
+                                    <option value="{$v.type_name}" {if $student_info['d_type'] == $v['type']}selected{/if}>{$v.type}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">RoomNumber<i style="color: red">*</i></label>
+                            <div class="layui-input-block">
+                                {if $student_info['dorm_id'] != 0}
+                                <select name="dorm_id" id="dorm_id" class="layui-input" lay-filter="dorm_id">
+                                    <option value="{$student_info['dorm_id']}">{$student_info['d_name']}</option>
+                                    {foreach $dorm_info as $k=>$v}
+                                    <option value="{$v['id']}">{$v['username']}</option>
+                                    {/foreach}
+                                </select>
+                                {else/}
+                                <select name="dorm_id" id="dorm_id" class="layui-input" lay-filter="dorm_id">
+                                    <option value="">please choose</option>
+                                </select>
+                                {/if}
+                            </div>
                         </div>
                     </div>
 
@@ -148,52 +202,6 @@
                             <!--</select>-->
                         <!--</div>-->
                     <!--</div>-->
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">ArrivalDate<i style="color: red">*</i></label>
-                        <div class="layui-input-block">
-                            <input type="text" class="layui-input" required lay-verify="required" name="arrival" value="{$student_info['arrival']=='0000-00-00'?'':$student_info['arrival']}"
-                                   id="test-laydate-start" placeholder="ArrivalDate">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">LeaveDate<i style="color: red">*</i></label>
-                        <div class="layui-input-block">
-                            <input type="text" class="layui-input" required lay-verify="required" name="leave" value="{$student_info['leave']=='0000-00-00'?'':$student_info['leave']}"
-                                   id="test-laydate-end" placeholder="LeaveDate">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">RoomType<i style="color: red">*</i></label>
-                        <div class="layui-input-block">
-                            <select id="dorm_type" class="layui-input" lay-filter="dorm_type">
-                                <option value="">please choose</option>
-                                {foreach $dorm_type as $k=>$v}
-                                <option value="{$v.type_name}" {if $student_info['d_type'] == $v['type']}selected{/if}>{$v.type}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">RoomNumber<i style="color: red">*</i></label>
-                        <div class="layui-input-block">
-                            {if $student_info['dorm_id'] != 0}
-                            <select name="dorm_id" id="dorm_id" class="layui-input" lay-filter="dorm_id">
-                                <option value="{$student_info['dorm_id']}">{$student_info['d_name']}</option>
-                                {foreach $dorm_info as $k=>$v}
-                                <option value="{$v['id']}">{$v['username']}</option>
-                                {/foreach}
-                            </select>
-                            {else/}
-                            <select name="dorm_id" id="dorm_id" class="layui-input" lay-filter="dorm_id">
-                                <option value="">please choose</option>
-                            </select>
-                            {/if}
-                        </div>
-                    </div>
 
                     <div class="layui-form-item">
                         <label class="layui-form-label">Agency</label>
