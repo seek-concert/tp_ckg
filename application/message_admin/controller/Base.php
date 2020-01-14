@@ -35,7 +35,8 @@ class Base extends Controller
         //判断登录
         if (empty(session('username')) || empty(session('password'))) {
             $loginUrl = url('login/index');
-            $this->error('please sign in', $loginUrl);
+            $this->error('please sign in');
+            echo "<script language='javascript'>parent.parent.location.href='$loginUrl'</script>";
         }
         $username = session('username');
         $password = session('password');
@@ -44,6 +45,7 @@ class Base extends Controller
         if (!$is_admin) {
             $loginUrl = url('login/index');
             $this->error('please sign in', $loginUrl);
+            echo "<script language='javascript'>parent.parent.location.href='$loginUrl'</script>";
         }
     }
 
