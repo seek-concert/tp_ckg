@@ -44,7 +44,7 @@ class Base extends Controller
         $is_admin = $this->admin_model->get_all_count(['username' => $username, 'password' => $password]);
         if (!$is_admin) {
             $loginUrl = url('login/index');
-            $this->error('please sign in', $loginUrl);
+            $this->error('please sign in');
             echo "<script language='javascript'>parent.parent.location.href='$loginUrl'</script>";
         }
     }
