@@ -20,7 +20,7 @@
             <div class="layui-card">
                 <div class="layui-card-header">
                     <button class="layui-btn layui-btn-sm" onclick="curriculum_add()" data-type="add">
-                        <i class="layui-icon layui-icon-add-1"></i>AddSubject
+                        <i class="layui-icon layui-icon-add-1"></i>AddCours
                     </button>
                 </div>
                 <div class="layui-card-body" pad15>
@@ -50,7 +50,8 @@
                     if(node.level == 0){
                         layer.confirm('', {
                                 time: 20000, //20s后自动关闭
-                                btn: ['AddCourse', 'EditSubject'],
+                                btn: ['AddSkills', 'EditCours'],
+                                title:'cours',
                                 //添加子节点
                             },function(){
                                 var url = "{:url('curriculum_add','','',true)}/id/" + node.id+'/level/'+node.level;
@@ -75,7 +76,8 @@
                     }else if(node.level == 1){
                         layer.confirm('', {
                                 time: 20000, //20s后自动关闭
-                                btn: ['AddTextbook', 'EditCourse'],
+                                btn: ['AddBooks', 'EditSkills'],
+                                title:'skills',
                                 //添加子节点
                             },function(){
                                 var url = "{:url('curriculum_add','','',true)}/id/" + node.id+'/level/'+node.level;
@@ -100,7 +102,8 @@
                     }else if(node.level == 2){
                         layer.confirm('', {
                                 time: 20000, //20s后自动关闭
-                                btn: ['EditTextbook'],
+                                btn: ['EditBooks'],
+                                title:'books',
                                 //添加子节点
                             },
                             //修改子节点

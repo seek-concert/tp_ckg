@@ -264,6 +264,7 @@
         //开始日期
         var insStart = laydate.render({
             elem: '#test-laydate-start'
+            , lang: 'en'
             , btns: ['confirm']
             , done: function (value, date) {
                 //更新结束日期的最小日期
@@ -279,6 +280,7 @@
         //结束日期
         var insEnd = laydate.render({
             elem: '#test-laydate-end'
+            , lang: 'en'
             , btns: ['confirm']
             , min: "{$student_info['arrival']=='0000-00-00'?'':$student_info['arrival']}"
             , done: function (value, date) {
