@@ -36,7 +36,8 @@ class Dormchart extends Base
         //月份
         $m = isset($param['months'])?(int)$param['months']:date('m');
         //获取所有床位
-        $dorm_lists = $this->dorm_model->get_all_data_page(['status'=>1],$page,$limit,'','id,username')?:[];
+//        $dorm_lists = $this->dorm_model->get_all_data_page(['status'=>1],$page,$limit,'','id,username')?:[];
+        $dorm_lists = $this->dorm_model->get_all_data(['status'=>1],'','id,username')?:[];
         $data = [];
         //拿到数据库已存在相关的年份
         $year =  Db::query("select distinct date_format(arrival ,'%Y') as 'years' from pq_student");

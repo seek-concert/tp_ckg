@@ -20,7 +20,7 @@
                 <form class="layui-form" action="" id="form_submit_add">
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">ArrivalDate</label>
+                        <label class="layui-form-label">Arrival Date</label>
                         <div class="layui-input-block">
                             <input type="text" class="layui-input" name="start"
                                    id="test-laydate-start" placeholder="ArrivalDate">
@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">LeaveDate</label>
+                        <label class="layui-form-label">Departure Date</label>
                         <div class="layui-input-block">
                             <input type="text" class="layui-input" name="end"
                                    id="test-laydate-end" placeholder="LeaveDate">
@@ -38,9 +38,19 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">Sex</label>
                         <div class="layui-input-block">
-                            <select name="sex" class="layui-input">
-                                <option value="1" selected>Male</option>
-                                <option value="2" >Female</option>
+                            <select name="sex" class="layui-input" lay-filter="sex">
+                                <option value="">please choose</option>
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">RoomType</label>
+                        <div class="layui-input-block">
+                            <select name="type" id="dorm_type" class="layui-input">
+                                <option value="">please choose</option>
                             </select>
                         </div>
                     </div>
@@ -111,6 +121,28 @@
                 });
             }
         });
+
+        //监听性别选择
+        form.on('select(sex)', function(data){
+            var sex = data.value;
+            $.ajax({
+                url: "{:url('dorm_type')}",
+                async: false,//这一步是非常重要的，作用是设置为同步执行
+                type: "POST",
+                data: {"sex":sex},
+                dataType: "json",
+                success: function (data) {
+                    $("#dorm_type").html('<option value="">please choose</option>');
+                    $("#dorm_id").html('<option value="">please choose</option>');
+                    var html='';
+                    $.each(data, function (k, v) {
+                        html += '<option value="' + v.type_name + '">' + v.type + '</option>';
+                    })
+                    $("#dorm_type").append(html);
+                    form.render('select');
+                }
+            });
+        })
     })
     function qx() {
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

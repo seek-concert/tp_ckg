@@ -10,6 +10,16 @@
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="__STATIC__/admin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="__STATIC__/admin/style/admin.css" media="all">
+    <style>
+        .layui-table-cell {
+            padding:0 5px;
+            height:auto;
+            overflow:visible;
+            text-overflow:inherit;
+            white-space:normal;
+            word-break: break-all;
+        }
+    </style>
 </head>
 
 <body>
@@ -42,8 +52,9 @@
                     <div class="layui-input-block">
                         <select name="status" class="layui-input">
                             <option value="">please choose</option>
-                            <option value="1">has not started</option>
+                            <option value="1">unstart</option>
                             <option value="2">learning</option>
+                            <option value="3">done</option>
                         </select>
                     </div>
                 </div>
@@ -98,7 +109,12 @@
             height: 550,
             url: '{:url("get_student_lists")}', //数据接口
             where: {},
-            page: true, //开启分页
+            page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['prev', 'page', 'next'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                ,limit:10 //一页显示多少条
+                ,groups: 2 //只显示 2 个连续页码
+            }, //开启分页
             toolbar: '#student_all',
             defaultToolbar: ['filter'],
             skin: 'nob',
@@ -159,7 +175,7 @@
                     },
                     {
                         field: 'passport',
-                        title: 'PassportNumber',
+                        title: 'Passport',
                         minWidth: 110,
                         align: 'center',
                     },
@@ -183,7 +199,7 @@
                     },
                     {
                         field: 'c_name',
-                        title: 'Subject',
+                        title: 'Course',
                         minWidth: 80,
                         align: 'center',
                     },
@@ -341,7 +357,7 @@
         var url = "{:url('dorm','','',true)}";
         add_index = layer.open({
             type: 2,
-            title: 'BedInquiry',
+            title: 'RoomInquiry',
             area: ['90%', '90%'],
             content: url
         });

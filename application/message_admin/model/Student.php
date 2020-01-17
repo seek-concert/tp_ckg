@@ -51,7 +51,7 @@ class Student extends Base
     //获取器--获取数据的字段值后自动转换为字符串描述
     public function getStatusAttr($value)
     {
-        $status = ['' => '', 1 => 'has not started', 2 => 'learning'];
+        $status = ['' => '', 1 => 'unstart', 2 => 'learning', 3 => 'done'];
         return $status[$value];
     }
 

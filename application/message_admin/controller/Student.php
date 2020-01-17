@@ -108,7 +108,7 @@ class Student extends Base
         $param = input('');
         //生成学号
         $student_id = $this->student_model->get_one_value('','id','id desc')?:0;
-        $student_id = "c".str_pad(($student_id+1),5,"0",STR_PAD_LEFT );
+        $student_id = "C".str_pad(($student_id+1),5,"0",STR_PAD_LEFT );
         if (request()->post()) {
             if(session('type') == 1){
                 $rule = [

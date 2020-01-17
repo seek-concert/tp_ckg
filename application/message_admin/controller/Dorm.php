@@ -99,6 +99,7 @@ class Dorm extends Base
             $rule = [
                 ['username', 'require|unique:dorm', 'Bed cannot be empty|Bed repetition'],
                 ['type', 'require', 'Sex cannot be empty'],
+                ['sex', 'require', 'Sex cannot be empty'],
                 ['status', 'require', 'Status cannot be empty'],
             ];
             //验证数据
@@ -111,6 +112,7 @@ class Dorm extends Base
             $sqlmap = [];
             $sqlmap['username'] = $param['username'];
             $sqlmap['type'] = $param['type'];
+            $sqlmap['sex'] = $param['sex'];
             $sqlmap['status'] = $param['status'];
             //修改数据
             $ret = $this->dorm_model->update_data($sqlmap,['id' => $id]);

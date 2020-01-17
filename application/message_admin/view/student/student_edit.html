@@ -39,8 +39,9 @@
                             <label class="layui-form-label">AcademicStatus</label>
                             <div class="layui-input-block">
                                 <select name="status"  class="layui-input">
-                                    <option value="1" {if $student_info['status'] == 'has not started'}selected{/if}>has not started</option>
-                                    <option value="1" {if $student_info['status'] == 'learning'}selected{/if}>learning</option>
+                                    <option value="1" {if $student_info['status'] == 'unstart'}selected{/if}>unstart</option>
+                                    <option value="2" {if $student_info['status'] == 'learning'}selected{/if}>learning</option>
+                                    <option value="3" {if $student_info['status'] == 'done'}selected{/if}>done</option>
                                 </select>
                             </div>
                         </div>
