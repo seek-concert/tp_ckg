@@ -788,7 +788,7 @@ class Student extends Base
             $type = $file_info['type'];
             if($type == 'application/vnd.ms-excel' || $type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
                 $name = explode(".",$file_info['name']);
-                if($name['0'] == '学生信息' && ($name[1] == 'xlsx' || $name[1] == 'xls')){
+                if($name['0'] == 'students information' && ($name[1] == 'xlsx' || $name[1] == 'xls')){
                     // 移动到框架应用根目录/public/uploads/ 目录下
                     $info = $file->move(ROOT_PATH . 'public' . DS . 'upload');
                     if ($info) {
