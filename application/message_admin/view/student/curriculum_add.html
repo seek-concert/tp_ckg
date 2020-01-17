@@ -20,14 +20,16 @@
                 <form class="layui-form" action="" id="form_submit_add">
                     <input type="hidden" name="student_id" value="{$student_id}">
                     <div class="layui-form-item">
-                        <label class="layui-form-label"></label>
+                        <label class="layui-form-label" style="width: 70px;"></label>
                         <label class="layui-form-label">course</label>
-                        <label class="layui-form-label"></label>
+                        <label class="layui-form-label" style="width: 70px;"></label>
                         <label class="layui-form-label">teacher</label>
-                        <label class="layui-form-label"></label>
+                        <label class="layui-form-label" style="width: 70px;"></label>
                         <label class="layui-form-label">classroom</label>
-                        <label class="layui-form-label"></label>
+                        <label class="layui-form-label" style="width: 70px;"></label>
                         <label class="layui-form-label">textbook</label>
+                        <label class="layui-form-label" style="width: 70px;"></label>
+                        <label class="layui-form-label">spareClassroom</label>
                     </div>
                     {for start="1" end="10"}
                     <div class="layui-form-item">
@@ -53,6 +55,14 @@
                         <div class="layui-input-inline">
                             <select name="textbook[{$i}]" id="textbook{$i}" class="layui-input">
                                 <option value="">please choose</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select name="classroom_id[{$i}]" id="classroom_id{$i}" class="layui-input">
+                                <option value="">please choose</option>
+                                {foreach $classroom_info as $k=>$v}
+                                    <option value="{$v['id']}">{$v['username']}</option>
+                                {/foreach}
                             </select>
                         </div>
                     </div>

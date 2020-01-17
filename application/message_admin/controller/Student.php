@@ -21,6 +21,8 @@ class Student extends Base
     protected $curriculum_model;
     //寝室模型
     protected $dorm_model;
+    //教室模型
+    protected $classroom_model;
     //课表模型
     protected $course_model;
     //老师模型
@@ -36,6 +38,7 @@ class Student extends Base
         $this->student_model = model('Student');
         $this->curriculum_model = model('Curriculum');
         $this->dorm_model = model('Dorm');
+        $this->classroom_model = model('Classroom');
         $this->course_model = model('Course');
         $this->teacher_model = model('Teacher');
         $this->dorm_log_model = model('DormLog');
@@ -382,14 +385,17 @@ class Student extends Base
             $this->error('Do not access illegally');
         }
         //查询课表信息
-        $course_info = $this->course_model->get_all_data(['student_id' => $id],'id asc','id,curriculum_id,teacher_id,textbook_id',['teacher','classroom']);
+        $course_info = $this->course_model->get_all_data(['student_id' => $id],'id asc','id,curriculum_id,teacher_id,textbook_id,classroom_id',['teacher','classroom']);
         //获取学生信息
         $student_info = $this->student_model->get_one_data(['id' => $id],'','id,curriculum_id,arrival,leave');
         //获取课程
         $curriculum_info = $this->curriculum_model->get_all_data(['pid' => $student_info['curriculum_id']],'','id,username')?:[];
+        //获取所有的教室
+        $classroom_info = $this->classroom_model->get_all_data(['status' => 1],'','id,username')?:[];
         //组装数据
         $return_data = [];
         $return_data['student_id'] = $id;
+        $return_data['classroom_info'] = $classroom_info;
         if(!empty($course_info)){
             foreach ($course_info as $k=>$v){
                 $course_info[$k]['book'] = $this->curriculum_model->get_all_data(['pid' => $v['curriculum_id']],'','id,username')?:[];
@@ -630,6 +636,7 @@ class Student extends Base
                 $sqlmap[$k]['num'] = $k;
                 $sqlmap[$k]['arrival'] = $student_info['arrival'];
                 $sqlmap[$k]['leave'] = $student_info['leave'];
+                $sqlmap[$k]['classroom_id'] = $param['classroom_id'][$k];
                 $sqlmap[$k]['input_time'] = time();
                 $sqlmap[$k]['update_time'] = time();
             }
@@ -668,6 +675,7 @@ class Student extends Base
                 $sqlmap[$k]['curriculum_id'] = $param['curriculum'][$k];
                 $sqlmap[$k]['teacher_id'] = $param['teacher'][$k];
                 $sqlmap[$k]['textbook_id'] = $param['textbook'][$k];
+                $sqlmap[$k]['classroom_id'] = $param['classroom_id'][$k];
             }
             //修改数据
             $ret = $this->course_model->isUpdate()->saveAll($sqlmap);

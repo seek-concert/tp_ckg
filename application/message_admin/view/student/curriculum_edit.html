@@ -20,14 +20,16 @@
                 <form class="layui-form" action="" id="form_submit_add">
                     <input type="hidden" name="student_id" value="{$student_id}">
                     <div class="layui-form-item">
-                        <label class="layui-form-label"></label>
+                        <label class="layui-form-label" style="width: 70px;"></label>
                         <label class="layui-form-label">course</label>
-                        <label class="layui-form-label"></label>
+                        <label class="layui-form-label" style="width: 70px;"></label>
                         <label class="layui-form-label">teacher</label>
-                        <label class="layui-form-label"></label>
+                        <label class="layui-form-label" style="width: 70px;"></label>
                         <label class="layui-form-label">classroom</label>
-                        <label class="layui-form-label"></label>
+                        <label class="layui-form-label" style="width: 70px;"></label>
                         <label class="layui-form-label">textbook</label>
+                        <label class="layui-form-label" style="width: 70px;"></label>
+                        <label class="layui-form-label">spareClassroom</label>
                     </div>
                     {foreach $course_info as $k=>$v}
                     <input type="hidden" name="id[{$k+1}]" value="{$v['id']}">
@@ -57,6 +59,14 @@
                                 <option value="">please choose</option>
                                 {foreach $v['book'] as $z=>$x}
                                 <option value="{$x['id']}" {if $x['id'] == $v['textbook_id']}selected{/if}>{$x['username']}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select name="classroom_id[{$k+1}]" id="classroom_id{$k+1}" class="layui-input">
+                                <option value="">please choose</option>
+                                {foreach $classroom_info as $a=>$b}
+                                <option value="{$b['id']}" {if $b['id']==$v['classroom_id']}selected{/if}>{$b['username']}</option>
                                 {/foreach}
                             </select>
                         </div>
