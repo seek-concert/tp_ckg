@@ -56,9 +56,9 @@
                             </div>
                         </div>
                         <div class="layui-col-lg6">
-                            <label class="layui-form-label">ContactNumber<i style="color: red">*</i></label>
+                            <label class="layui-form-label">ContactNumber</label>
                             <div class="layui-input-block">
-                                <input type="text" name="phone" required lay-verify="required" value="{$student_info['phone']}"
+                                <input type="text" name="phone" required value="{$student_info['phone']}"
                                        placeholder="Please enter contact number" autocomplete="off" class="layui-input">
                             </div>
                         </div>
@@ -95,9 +95,8 @@
                                     <option value="Japan" {if $student_info['nationality'] == 'Japan'}selected{/if}>Japan</option>
                                     <option value="Vietnam" {if $student_info['nationality'] == 'Vietnam'}selected{/if}>Vietnam</option>
                                     <option value="Russia" {if $student_info['nationality'] == 'Russia'}selected{/if}>Russia</option>
-                                    <option value="Arab" {if $student_info['nationality'] == 'Arab'}selected{/if}>Arab</option>
+                                    <option value="ArabSaudi" {if $student_info['nationality'] == 'ArabSaudi'}selected{/if}>ArabSaudi</option>
                                     <option value="Mongolia" {if $student_info['nationality'] == 'Mongolia'}selected{/if}>Mongolia</option>
-                                    <option value="Saudi" {if $student_info['nationality'] == 'Saudi'}selected{/if}>Saudi</option>
                                     <option value="Arabia" {if $student_info['nationality'] == 'Arabia'}selected{/if}>Arabia</option>
                                     <option value="Thailand" {if $student_info['nationality'] == 'Thailand'}selected{/if}>Thailand</option>
                                 </select>
@@ -165,7 +164,7 @@
                             </div>
                         </div>
                     </div>
-
+                    {if $Think.session.type == 1}
                     <div class="layui-row layui-col-space10 layui-form-item">
                         <div class="layui-col-lg6">
                             <label class="layui-form-label">RoomType<i style="color: red">*</i></label>
@@ -196,7 +195,7 @@
                             </div>
                         </div>
                     </div>
-
+                    {/if}
                     <!--<div class="layui-form-item">-->
                         <!--<label class="layui-form-label">ClassMode</label>-->
                         <!--<div class="layui-input-block">-->

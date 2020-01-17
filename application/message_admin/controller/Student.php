@@ -119,7 +119,7 @@ class Student extends Base
             if(session('type') == 1){
                 $rule = [
                     ['name', 'require', 'Name cannot be empty'],
-                    ['phone', 'require', 'ContactNumber can not be blank'],
+//                    ['phone', 'require', 'ContactNumber can not be blank'],
                     ['sex', 'require', 'Sex can not be blank'],
                     ['age', 'require', 'Age can not be blank'],
                     ['nationality', 'require', 'Nationality can not be blank'],
@@ -131,7 +131,7 @@ class Student extends Base
             }else{
                 $rule = [
                     ['name', 'require', 'Name cannot be empty'],
-                    ['phone', 'require', 'ContactNumber can not be blank'],
+//                    ['phone', 'require', 'ContactNumber can not be blank'],
                     ['sex', 'require', 'Sex can not be blank'],
                     ['age', 'require', 'Age can not be blank'],
                     ['nationality', 'require', 'Nationality can not be blank'],
@@ -216,7 +216,7 @@ class Student extends Base
             if(session('type') == 1){
                 $rule = [
                     ['name', 'require', 'Name cannot be empty'],
-                    ['phone', 'require', 'ContactNumber can not be blank'],
+//                    ['phone', 'require', 'ContactNumber can not be blank'],
                     ['sex', 'require', 'Sex can not be blank'],
                     ['age', 'require', 'Age can not be blank'],
                     ['nationality', 'require', 'Nationality can not be blank'],
@@ -228,7 +228,7 @@ class Student extends Base
             }else{
                 $rule = [
                     ['name', 'require', 'Name cannot be empty'],
-                    ['phone', 'require', 'ContactNumber can not be blank'],
+//                    ['phone', 'require', 'ContactNumber can not be blank'],
                     ['sex', 'require', 'Sex can not be blank'],
                     ['age', 'require', 'Age can not be blank'],
                     ['nationality', 'require', 'Nationality can not be blank'],
@@ -361,7 +361,7 @@ class Student extends Base
         $dorm = $this->dorm_model->get_all_data(['status' => 1,'sex' => $sex,'type' => $type],'','id');
         if(empty($dorm)){
 //            $this->error('No bed');
-            return ['code'=>0,'msg'=>'No bed'];
+            return ['code'=>0,'msg'=>'Unavailble'];
         }
         foreach ($dorm as $k=>$v)
         {
@@ -372,11 +372,11 @@ class Student extends Base
         $dorm_id = implode(',',array_merge(array_filter($student_dorm)));
 //        $dorm_id = array_search('2',$student_dorm);
         if(empty($dorm_id)){
-            return ['code'=>0,'msg'=>'No bed'];
+            return ['code'=>0,'msg'=>'Unavailble'];
         }
         $dorm = $this->dorm_model->get_all_data(['id'=>['in',$dorm_id]],'','id,username,type');
 //        $this->success('With bed','',$dorm);
-        return ['code'=>1,'msg'=>'With bed','data'=>$dorm];
+        return ['code'=>1,'msg'=>'Availble','data'=>$dorm];
     }
 
     /**
