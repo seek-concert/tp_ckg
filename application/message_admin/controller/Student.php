@@ -94,9 +94,15 @@ class Student extends Base
             $lists[$k]['course'] = $this->course_model->get_all_count(['student_id'=>$v['id']]);
         }
         $return_data = [];
-        $return_data['code'] = 1;
-        $return_data['count'] = $this->student_model->get_all_count($sqlmap);
-        $return_data['data'] = $lists;
+        if(empty($lists)){
+            $return_data['code'] = 0;
+            $return_data['data'] = [];
+            $return_data['msg'] = 'no data';
+        }else {
+            $return_data['code'] = 1;
+            $return_data['count'] = $this->student_model->get_all_count($sqlmap);
+            $return_data['data'] = $lists;
+        }
         return $return_data;
     }
 
