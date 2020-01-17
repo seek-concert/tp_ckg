@@ -49,7 +49,7 @@ class Teacher extends Base
         //条件组装
         $sqlmap = [];
         //列表信息
-        $lists = $this->teacher_model->get_all_data_page($sqlmap, $page, $limit, 'id desc', 'id,identifier,username,classroom_id,curriculum,team,status,input_time',['classroom']);
+        $lists = $this->teacher_model->get_all_data_page($sqlmap, $page, $limit, 'id desc', 'id,identifier,username,classroom_id,curriculum,team,status,input_time',['classroom'])?:[];
         foreach ($lists as $k=>$v) {
             $curriculum = explode(',',$v['curriculum']);
             $curriculums = '';

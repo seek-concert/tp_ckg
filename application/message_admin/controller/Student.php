@@ -110,17 +110,30 @@ class Student extends Base
         $student_id = $this->student_model->get_one_value('','id','id desc')?:0;
         $student_id = "c".str_pad(($student_id+1),5,"0",STR_PAD_LEFT );
         if (request()->post()) {
-            $rule = [
-                ['name', 'require', 'Name cannot be empty'],
-                ['phone', 'require', 'ContactNumber can not be blank'],
-                ['sex', 'require', 'Sex can not be blank'],
-                ['age', 'require', 'Age can not be blank'],
-                ['nationality', 'require', 'Nationality can not be blank'],
-                ['curriculum_id', 'require', 'Subject cannot be empty'],
-                ['arrival', 'require', 'ArrivalDate cannot be empty'],
-                ['leave', 'require', 'LeaveDate cannot be empty'],
-                ['dorm_id', 'require', 'RoomNumber cannot be empty']
-            ];
+            if(session('type') == 1){
+                $rule = [
+                    ['name', 'require', 'Name cannot be empty'],
+                    ['phone', 'require', 'ContactNumber can not be blank'],
+                    ['sex', 'require', 'Sex can not be blank'],
+                    ['age', 'require', 'Age can not be blank'],
+                    ['nationality', 'require', 'Nationality can not be blank'],
+                    ['curriculum_id', 'require', 'Subject cannot be empty'],
+                    ['arrival', 'require', 'ArrivalDate cannot be empty'],
+                    ['leave', 'require', 'LeaveDate cannot be empty'],
+                    ['dorm_id', 'require', 'RoomNumber cannot be empty']
+                ];
+            }else{
+                $rule = [
+                    ['name', 'require', 'Name cannot be empty'],
+                    ['phone', 'require', 'ContactNumber can not be blank'],
+                    ['sex', 'require', 'Sex can not be blank'],
+                    ['age', 'require', 'Age can not be blank'],
+                    ['nationality', 'require', 'Nationality can not be blank'],
+                    ['curriculum_id', 'require', 'Subject cannot be empty'],
+                    ['arrival', 'require', 'ArrivalDate cannot be empty'],
+                    ['leave', 'require', 'LeaveDate cannot be empty']
+                ];
+            }
             //验证数据
             $result = $this->validate($param, $rule);
             if (true !== $result) {
@@ -194,17 +207,30 @@ class Student extends Base
             $this->error('Do not access illegally');
         }
         if (request()->post()) {
-            $rule = [
-                ['name', 'require', 'Name cannot be empty'],
-                ['phone', 'require', 'ContactNumber can not be blank'],
-                ['sex', 'require', 'Sex can not be blank'],
-                ['age', 'require', 'Age can not be blank'],
-                ['nationality', 'require', 'Nationality can not be blank'],
-                ['curriculum_id', 'require', 'Subject cannot be empty'],
-                ['arrival', 'require', 'ArrivalDate cannot be empty'],
-                ['leave', 'require', 'LeaveDate cannot be empty'],
-                ['dorm_id', 'require', 'RoomNumber cannot be empty']
-            ];
+            if(session('type') == 1){
+                $rule = [
+                    ['name', 'require', 'Name cannot be empty'],
+                    ['phone', 'require', 'ContactNumber can not be blank'],
+                    ['sex', 'require', 'Sex can not be blank'],
+                    ['age', 'require', 'Age can not be blank'],
+                    ['nationality', 'require', 'Nationality can not be blank'],
+                    ['curriculum_id', 'require', 'Subject cannot be empty'],
+                    ['arrival', 'require', 'ArrivalDate cannot be empty'],
+                    ['leave', 'require', 'LeaveDate cannot be empty'],
+                    ['dorm_id', 'require', 'RoomNumber cannot be empty']
+                ];
+            }else{
+                $rule = [
+                    ['name', 'require', 'Name cannot be empty'],
+                    ['phone', 'require', 'ContactNumber can not be blank'],
+                    ['sex', 'require', 'Sex can not be blank'],
+                    ['age', 'require', 'Age can not be blank'],
+                    ['nationality', 'require', 'Nationality can not be blank'],
+                    ['curriculum_id', 'require', 'Subject cannot be empty'],
+                    ['arrival', 'require', 'ArrivalDate cannot be empty'],
+                    ['leave', 'require', 'LeaveDate cannot be empty']
+                ];
+            }
             //验证数据
             $result = $this->validate($param, $rule);
             if (true !== $result) {

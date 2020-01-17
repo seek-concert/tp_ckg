@@ -29,7 +29,7 @@ class Curriculum extends Base
     {
         if (request()->isPost()) {
             //所有一级菜单
-            $lists = $this->curriculum_model->get_all_data(['pid' => 0]);
+            $lists = $this->curriculum_model->get_all_data(['pid' => 0])?:[];
 
             //二级菜单
             foreach ($lists as $key => $value) {

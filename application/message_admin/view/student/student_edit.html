@@ -88,22 +88,25 @@
                             <label class="layui-form-label">Nationality<i style="color: red">*</i></label>
                             <div class="layui-input-block">
                                 <select name="nationality"  class="layui-input">
-                                    <option value="china" {if $student_info['nationality'] == 'china'}selected{/if}>china</option>
-                                    <option value="taiwan" {if $student_info['nationality'] == 'taiwan'}selected{/if}>taiwan</option>
-                                    <option value="korean" {if $student_info['nationality'] == 'korean'}selected{/if}>korean</option>
-                                    <option value="japan" {if $student_info['nationality'] == 'japan'}selected{/if}>japan</option>
-                                    <option value="vietnam" {if $student_info['nationality'] == 'vietnam'}selected{/if}>vietnam</option>
-                                    <option value="russia" {if $student_info['nationality'] == 'russia'}selected{/if}>russia</option>
-                                    <option value="arab" {if $student_info['nationality'] == 'arab'}selected{/if}>arab</option>
-                                    <option value="mongolia" {if $student_info['nationality'] == 'mongolia'}selected{/if}>mongolia</option>
+                                    <option value="China" {if $student_info['nationality'] == 'China'}selected{/if}>China</option>
+                                    <option value="Taiwan" {if $student_info['nationality'] == 'Taiwan'}selected{/if}>Taiwan</option>
+                                    <option value="Korean" {if $student_info['nationality'] == 'Korean'}selected{/if}>Korean</option>
+                                    <option value="Japan" {if $student_info['nationality'] == 'Japan'}selected{/if}>Japan</option>
+                                    <option value="Vietnam" {if $student_info['nationality'] == 'Vietnam'}selected{/if}>Vietnam</option>
+                                    <option value="Russia" {if $student_info['nationality'] == 'Russia'}selected{/if}>Russia</option>
+                                    <option value="Arab" {if $student_info['nationality'] == 'Arab'}selected{/if}>Arab</option>
+                                    <option value="Mongolia" {if $student_info['nationality'] == 'Mongolia'}selected{/if}>Mongolia</option>
+                                    <option value="Saudi" {if $student_info['nationality'] == 'Saudi'}selected{/if}>Saudi</option>
+                                    <option value="Arabia" {if $student_info['nationality'] == 'Arabia'}selected{/if}>Arabia</option>
+                                    <option value="Thailand" {if $student_info['nationality'] == 'Thailand'}selected{/if}>Thailand</option>
                                 </select>
                             </div>
                         </div>
                         <div class="layui-col-lg6">
-                            <label class="layui-form-label">PassportNumber</label>
+                            <label class="layui-form-label">Passport</label>
                             <div class="layui-input-block">
                                 <input type="text" name="passport" value="{$student_info['passport']}"
-                                       placeholder="Please enter passport number" autocomplete="off" class="layui-input">
+                                       placeholder="Please enter passport" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                     </div>
@@ -127,7 +130,7 @@
 
                     <div class="layui-row layui-col-space10 layui-form-item">
                         <div class="layui-col-lg6">
-                            <label class="layui-form-label">Subject<i style="color: red">*</i></label>
+                            <label class="layui-form-label">Course<i style="color: red">*</i></label>
                             <div class="layui-input-block">
                                 <select name="curriculum_id"  class="layui-input">
                                     {foreach $curriculum_info as $k=>$v}
