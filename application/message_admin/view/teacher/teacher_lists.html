@@ -48,7 +48,12 @@
             height: 550,
             url: '{:url("get_teacher_lists")}', //数据接口
             where: {},
-            page: true, //开启分页
+            page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['prev', 'page', 'next'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                ,limit:10 //一页显示多少条
+                ,groups: 5 //只显示 2 个连续页码
+            }, //开启分页
             toolbar: '#teacher_all',
             defaultToolbar: ['filter'],
             skin: 'nob',
