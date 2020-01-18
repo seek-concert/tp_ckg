@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>CKG课管管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="__STATIC__/admin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__STATIC__/admin/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <table class="layui-table">
+                <thead>
+                <tr>
+                    <td width="20">Students's Name:</td>
+                    <td width="20">{$student_info['name']}</td>
+                    <td width="20"></td>
+                    <td width="20"></td>
+                    <td width="20">English Name:</td>
+                    <td width="20">{$student_info['english']}</td>
+                </tr>
+                <tr>
+                    <td width="20">Duration:</td>
+                    <td width="20">{$student_info['days']}</td>
+                    <td width="20"></td>
+                    <td width="20"></td>
+                    <td width="20">Course:</td>
+                    <td width="20">{$student_info['c_name']}</td>
+                </tr>
+                <tr>
+                    <td width="20">Nationality:</td>
+                    <td width="20">{$student_info['nationality']}</td>
+                    <td width="20"></td>
+                    <td width="20"></td>
+                    <td width="20">Age:</td>
+                    <td width="20">{$student_info['age']}</td>
+                </tr>
+                <tr>
+                    <td width="20">Student's Code:</td>
+                    <td width="20">{$student_info['student_id']}</td>
+                    <td width="20"></td>
+                    <td width="20"></td>
+                    <td width="20">Class Start:</td>
+                    <td width="20">{$student_info['arrival']}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;border-top: #000000 2px solid;background-color: rgb(255,203,166);color: #000000;border-left: #000000 2px solid"  width="20">Subject#</td>
+                    <td style="text-align: center;border-top: #000000 2px solid;background-color: rgb(255,203,166);color: #000000;" width="20">Time</td>
+                    <td style="text-align: center;border-top: #000000 2px solid;background-color: rgb(255,203,166);color: #000000;" width="20">Teacher</td>
+                    <td style="text-align: center;border-top: #000000 2px solid;background-color: rgb(255,203,166);color: #000000;" width="20">Room</td>
+                    <td style="text-align: center;border-top: #000000 2px solid;background-color: rgb(255,203,166);color: #000000;" width="20">Class</td>
+                    <td style="text-align: center;border-top: #000000 2px solid;background-color: rgb(255,203,166);color: #000000;border-right: #000000 2px solid" width="20">Book/Price:</td>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach $course_info as $k => $v}
+                    {if $k == 5}
+                        <tr>
+                            <th colspan="6" style="text-align: center;border-left: #000000 2px solid;border-right: #000000 2px solid;background-color:rgb(255,253,56) ">Lunch Break</th>
+                            <th style="display: none"></th>
+                            <th style="display: none"></th>
+                            <th style="display: none"></th>
+                            <th style="display: none"></th>
+                            <th style="display: none"></th>
+                            <th style="display: none;"></th>
+                        </tr>
+                    {/if}
+                    <tr {if $k==9}style="color: #000000;border-bottom: #000000 2px solid"{/if}>
+                        {foreach $v as $z => $x}
+                        <th style="text-align: center;{if $z==0}background-color:rgb(204,205,253) ;color: #000000;border-left: #000000 2px solid;{/if}{if $z==5}color: #000000;border-right: #000000 2px solid;{/if}">
+                            {$x}
+                        </th>
+                        {/foreach}
+                    </tr>
+                {/foreach}
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__STATIC__/admin/layui/layui.js"></script>
+<script src="__STATIC__/jquery-3.2.1.min.js"></script>
+<script>
+    layui.config({
+        base: '__STATIC__/admin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    })
+</script>
+</body>
+</html>
