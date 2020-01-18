@@ -126,6 +126,7 @@ class Student extends Base
                     ['curriculum_id', 'require', 'Subject cannot be empty'],
                     ['arrival', 'require', 'ArrivalDate cannot be empty'],
                     ['leave', 'require', 'LeaveDate cannot be empty'],
+                    ['dorm_type', 'require', 'RoomType cannot be empty'],
                     ['dorm_id', 'require', 'RoomNumber cannot be empty']
                 ];
             }else{
@@ -137,7 +138,8 @@ class Student extends Base
                     ['nationality', 'require', 'Nationality can not be blank'],
                     ['curriculum_id', 'require', 'Subject cannot be empty'],
                     ['arrival', 'require', 'ArrivalDate cannot be empty'],
-                    ['leave', 'require', 'LeaveDate cannot be empty']
+                    ['leave', 'require', 'LeaveDate cannot be empty'],
+                    ['dorm_type', 'require', 'RoomType cannot be empty']
                 ];
             }
             //验证数据
@@ -164,6 +166,7 @@ class Student extends Base
             $sqlmap['school']  = isset($param['school'])?$param['school']:'';
             $sqlmap['arrival']  = isset($param['arrival'])?$param['arrival']:'';
             $sqlmap['leave']  = isset($param['leave'])?$param['leave']:'';
+            $sqlmap['dorm_type']  = isset($param['dorm_type'])?$param['dorm_type']:'';
             $sqlmap['dorm_id']  = isset($param['dorm_id'])?$param['dorm_id']:'';
             $sqlmap['remarks']  = isset($param['remarks'])?$param['remarks']:'';
             $sqlmap['pay']  = isset($param['pay'])?$param['pay']:1;
@@ -223,6 +226,7 @@ class Student extends Base
                     ['curriculum_id', 'require', 'Subject cannot be empty'],
                     ['arrival', 'require', 'ArrivalDate cannot be empty'],
                     ['leave', 'require', 'LeaveDate cannot be empty'],
+                    ['dorm_type', 'require', 'RoomType cannot be empty'],
                     ['dorm_id', 'require', 'RoomNumber cannot be empty']
                 ];
             }else{
@@ -234,7 +238,8 @@ class Student extends Base
                     ['nationality', 'require', 'Nationality can not be blank'],
                     ['curriculum_id', 'require', 'Subject cannot be empty'],
                     ['arrival', 'require', 'ArrivalDate cannot be empty'],
-                    ['leave', 'require', 'LeaveDate cannot be empty']
+                    ['leave', 'require', 'LeaveDate cannot be empty'],
+                    ['dorm_type', 'require', 'RoomType cannot be empty']
                 ];
             }
             //验证数据
@@ -260,6 +265,7 @@ class Student extends Base
             $sqlmap['school']  = isset($param['school'])?$param['school']:'';
             $sqlmap['arrival']  = isset($param['arrival'])?$param['arrival']:'';
             $sqlmap['leave']  = isset($param['leave'])?$param['leave']:'';
+            $sqlmap['dorm_type']  = isset($param['dorm_type'])?$param['dorm_type']:'';
             $sqlmap['dorm_id']  = isset($param['dorm_id'])?$param['dorm_id']:'';
             $sqlmap['remarks']  = isset($param['remarks'])?$param['remarks']:'';
             $sqlmap['pay']  = isset($param['pay'])?$param['pay']:1;
@@ -295,7 +301,7 @@ class Student extends Base
             }
         }
         //获取学生信息
-        $student_info = $this->student_model->get_one_data(['id'=>$id], 'id desc', 'id,student_id,name,status,phone,english,sex,age,nationality,passport,address,arrival,flight,curriculum_id,days,dorm_id,mechanism_id,school,pay,leave,remarks,admin_id', ['admins','dorm']);
+        $student_info = $this->student_model->get_one_data(['id'=>$id], 'id desc', 'id,student_id,name,status,phone,english,sex,age,nationality,passport,address,arrival,flight,curriculum_id,days,dorm_id,dorm_type,mechanism_id,school,pay,leave,remarks,admin_id', ['admins','dorm']);
         //获取学科
         $curriculum_info = $this->curriculum_model->get_all_data(['level' => 0], '', 'id,username')?:[];
         //获取寝室类型
@@ -304,22 +310,7 @@ class Student extends Base
         //获取寝室
         $start = $student_info['arrival'];
         $end = $student_info['leave'];
-        switch ($student_info['d_type']){
-            case 'Single':
-                $type = 1;
-                break;
-            case 'Double':
-                $type = 2;
-                break;
-            case 'Triple':
-                $type = 3;
-                break;
-            case 'Quadruple':
-                $type = 4;
-                break;
-            default:
-                $type = '';
-        }
+        $type = $student_info['dorm_type'];
         $dorm_info = $this->student_dorm($start,$end,$sex,$type);
         if($dorm_info['code'] == 1){
             $dorm_info = $dorm_info['data'];
