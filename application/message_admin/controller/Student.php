@@ -874,4 +874,44 @@ class Student extends Base
             }
         }
     }
+
+    public function curriculum()
+    {
+        $param = input('');
+        $id = isset($param['id'])?(int)$param['id']:0;
+        if($id == 0){
+            $this->error('Do not access illegally');
+        }
+        //获取当前学生的信息
+        $student_info = $this->student_model->get_one_data(['id'=>$id], 'id desc', 'id,student_id,name,english,age,nationality,curriculum_id,days,arrival',['curriculum']);
+        //获取当前学生的课表
+        $course_info = $this->course_model->get_all_data(['student_id'=>$id],'num asc','id,curriculum_id,teacher_id,textbook_id,classroom_id,num')?:[];
+        //组装数据
+        $datas = [];
+        $datas[] = ['Vocabulary Test','8:00-8:30','','','',''];
+        $datas[] = ['Subject 1','8:35-9:20','','','',''];
+        $datas[] = ['Subject 2','9:25-10:10','','','',''];
+        $datas[] = ['Subject 3','10:15-11:00','','','',''];
+        $datas[] = ['Subject 4','11:05-11:50','','','',''];
+        $datas[] = ['Subject 5','12:50-1:35','','','',''];
+        $datas[] = ['Subject 6','1:40-2:25','','','',''];
+        $datas[] = ['Subject 7','2:30-3:15','','','',''];
+        $datas[] = ['Subject 8','3:20-4:05','','','',''];
+        $datas[] = ['Subject 9','4:10-4:55','','','',''];
+        foreach ($course_info as $k=>$v){
+            $teacher_info = $this->teacher_model->get_one_data(['id' => $v['teacher_id']],'','id,username,classroom_id',['classroom']);
+            $datas[$v['num']][2] = $teacher_info['username'];
+            if(empty($v['classroom_id'])){
+                $datas[$v['num']][3] = $teacher_info['c_name'];
+            }else{
+                $datas[$v['num']][3] = $this->classroom_model->get_one_value(['id'=>$v['classroom_id']],'username');
+            }
+            $datas[$v['num']][4] = $this->curriculum_model->get_one_value(['id' => $v['curriculum_id']],'username')?:'Self - Study';
+            $datas[$v['num']][5] = $this->curriculum_model->get_one_value(['id' => $v['textbook_id']],'username');
+        }
+        $return_data = [];
+        $return_data['student_info'] = $student_info;
+        $return_data['course_info'] = $datas;
+        return view('',$return_data);
+    }
 }
