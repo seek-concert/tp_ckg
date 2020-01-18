@@ -50,9 +50,15 @@ class Classroom extends Base
         //列表信息
         $lists = $this->classroom_model->get_all_data_page($sqlmap, $page, $limit, 'id desc', 'id,username,status,input_time');
         $return_data = [];
-        $return_data['code'] = 1;
-        $return_data['count'] = $this->classroom_model->get_all_count($sqlmap);
-        $return_data['data'] = $lists;
+        if(empty($lists)){
+            $return_data['code'] = 0;
+            $return_data['data'] = [];
+            $return_data['msg'] = 'no data';
+        }else {
+            $return_data['code'] = 1;
+            $return_data['count'] = $this->classroom_model->get_all_count($sqlmap);
+            $return_data['data'] = $lists;
+        }
         return $return_data;
     }
 
